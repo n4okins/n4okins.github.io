@@ -1,14 +1,14 @@
 AUTHOR = 'n4okins'
-SITENAME = 'blog'
+SITENAME = 'nsnote'
 SITEURL = 'https://n4okins.github.io/blog'
 
 STATIC_PATHS = [
     'static/assets',
 ]
 EXTRA_PATH_METADATA = {
-    'static/assets/HackGenConsoleNFJ-Regular.ttf': {'path': 'theme/fonts/HackGenConsoleNFJ-Regular.ttf'},
+    'static/assets/HackGenConsoleNFJ-Regular-Light.ttf': {'path': 'theme/fonts/HackGenConsoleNFJ-Regular-Light.ttf'},
     'static/assets/robots.txt': {'path': 'robots.txt'},
-    'static/assets/favicon.ico': {'path': 'favicon.ico'},  # and this
+    'static/assets/favicon.png': {'path': 'favicon.png'},  # and this
     'static/assets/CNAME': {'path': 'CNAME'},
     'static/assets/LICENSE': {'path': 'LICENSE'},
     'static/assets/README': {'path': 'README'},
