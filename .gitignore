@@ -1,0 +1,8 @@
+poetry.lock
+pyproject.toml
+tasks.py
+/addons/
+/addons/*
+/addons/**
+/.venv
+/.idea
