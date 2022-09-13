@@ -3,4 +3,3 @@ pyproject.toml
 /addons/**
 /.venv
 /.idea
-/output/**
