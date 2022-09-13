@@ -52,13 +52,8 @@ def clear_console():
 
         init_namespace.destroy();
 
-        let public_namespace = pyodide.globals.get("dict")();
+        term = $("#nsh");
 
-
-        pyodide.runPython(
-            await (await fetch("./static/py/public.py")).text(),
-            {globals: public_namespace}
-        );
 
         let ps1 = "nsh > ",
             ps2 = "  ... ";
@@ -71,12 +66,25 @@ def clear_console():
             return resolve;
         }
 
+        let public_namespace = pyodide.globals.get("dict")();
+
+        public_namespace.set("__alert__", alert);
+        public_namespace.set("__display__", document.getElementById("display"));
+
+        pyodide.runPython(
+            await (await fetch("./static/py/public.py")).text(),
+            {globals: public_namespace}
+        );
+
         async function interpreter(command) {
             let [cmd, cmd_args] = public_namespace.get("command_parser")(command);
             let is_command = public_namespace.get("command_checker")(cmd);
 
             if (is_command) {
-                echo(public_namespace.get("command_execute")(cmd, cmd_args));
+                let ret = public_namespace.get("command_execute")(cmd, ...cmd_args);
+                if(ret){
+                    echo(ret);
+                }
             } else {
                 let unlock = await lock();
                 term.pause();
@@ -133,7 +141,6 @@ def clear_console():
             ;
         }
 
-        term = $("#nsh");
         term = term.terminal(interpreter, {
             greetings: "Welcome to nsh terminal.",
             prompt: ps1,
