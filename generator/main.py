@@ -6,7 +6,7 @@ import shutil
 __current_dir__ = Path(__file__).parent.resolve()
 __static_dir__ = __current_dir__ / "static"
 __templates_dir__ = __current_dir__ / "templates"
-__output_dir__ = __current_dir__.parent / "output"
+__output_dir__ = __current_dir__.parent / "docs"
 
 if __output_dir__.exists():
     shutil.rmtree(__output_dir__)
