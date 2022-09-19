@@ -4,6 +4,7 @@ import random
 __globals__ = globals()
 __display__ = __globals__["__display__"]
 
+
 class CMD:
     @staticmethod
     def ls(*args):
@@ -33,8 +34,3 @@ def command_checker(cmd):
 def command_execute(cmd, *args):
     return getattr(CMD, cmd)(*args)
 
-
-def add_div():
-    div = js.document.createElement("div")
-    div.innerHTML = "<h1>This element was created from Python</h1>"
-    js.document.body.prepend(div)

@@ -82,7 +82,7 @@ def clear_console():
 
             if (is_command) {
                 let ret = public_namespace.get("command_execute")(cmd, ...cmd_args);
-                if(ret){
+                if (ret) {
                     echo(ret);
                 }
             } else {
@@ -200,12 +200,16 @@ def clear_console():
         }
     }
 
-    $('.shell').resizable({
-        minHeight: window.innerHeight * 0.1,
-        minWidth: window.innerWidth * 0.33
-    }).draggable({
-        handle: '> .status-bar .title'
-    });
+    $('#nsh-shell').resizable(
+        {
+            minHeight: window.innerHeight * 0.1,
+            minWidth: window.innerWidth * 0.33
+        }
+    ).draggable(
+        {
+            handle: '> .status-bar .title'
+        }
+    );
 
     window.console_ready = main();
 });

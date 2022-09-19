@@ -4,42 +4,32 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no">
 
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.terminal/2.34.0/js/jquery.terminal.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/shell.js@1.0.5/dist/css/shell.min.css">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.terminal/2.34.0/css/jquery.terminal.min.css"
           rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css">
+    <link rel="stylesheet" href="static/css/terminal_emulator.css">
+
+
+    <script src="http://code.jquery.com/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.terminal/2.34.0/js/jquery.terminal.min.js"></script>
+
+
+    <script src="static/js/jquery.ui.touch-punch.js"></script>
 
     <script defer="" data-domain="pyodide.org" src="https://plausible.io/js/plausible.js"></script>
     <script src="https://cdn.jsdelivr.net/pyodide/v0.21.2/full/pyodide.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-
-    <link rel="stylesheet" type="text/css" href="https://unpkg.com/shell.js@1.0.5/dist/css/shell.min.css">
-    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-
     <script src="static/js/terminal_emulator.js" type="text/javascript"></script>
-    <link rel="stylesheet" href="static/css/terminal_emulator.css">
-
-<title>Terminal</title>
+    <title>Terminal</title>
 </head>
 <body>
 <div id="display"></div>
-<div class="shell ubuntu dark shadow">
+<div class="shell ubuntu dark shadow" id="nsh-shell">
     <div class="status-bar">
-        <div class="buttons">
-            <a href="javascript:;" class="close" title="Close">
-                <i class="fa fa-times"></i>
-            </a>
-            <a href="javascript:;" class="minimize" title="Minimize">
-                <i class="fa fa-minus"></i>
-            </a>
-            <a href="javascript:;" class="enlarge" title="Enlarge">
-                <i class="fa fa-plus"></i>
-            </a>
-        </div>
         <div class="title"></div>
     </div>
     <div class="content" id="nsh"></div>
