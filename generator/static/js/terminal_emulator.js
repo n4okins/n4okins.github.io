@@ -213,3 +213,9 @@ def clear_console():
 
     window.console_ready = main();
 });
+
+
+$(".terminal-btn-minimize").click(function(){
+    $(this).toggleClass('btn-plus');
+    $(".widget-content").slideToggle();
+});

@@ -14,7 +14,7 @@ __output_dir__.mkdir(parents=True)
 
 
 class PageObject:
-    def __init__(self, template: Template,  **kwargs):
+    def __init__(self, template: Template, **kwargs):
         self._meta = kwargs
         self._template: Template = template
 
@@ -33,16 +33,22 @@ class TemplateFuncTools:
     def url(path: str):
         return path
 
+    @staticmethod
+    def insert_html(html_path: str):
+        with open(html_path, "r") as f:
+            html_raw = f.read()
+        return html_raw
+
 
 env.globals.update(
     {
-        "url": TemplateFuncTools.url
+        "url": TemplateFuncTools.url,
+        "insert_html": TemplateFuncTools.insert_html
     }
 )
 
 base_template = env.get_template("base.html")
 base_page = PageObject(base_template)
-
 
 shutil.copytree(__static_dir__, __output_dir__ / "static")
 
