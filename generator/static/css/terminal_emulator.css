@@ -12,8 +12,9 @@ body {
 body .shell {
 
     margin: auto;
-    width: 85vw;
-    height: 20vh;
+    width: 60vw;
+    height: 25vh;
+    box-shadow: none;
 }
 
 body .shell .terminal {
@@ -94,34 +95,48 @@ body .shell .terminal .cmd {
     background-color: var(--color, #aaa);
 }
 
-
 .btn-close {
     width: 20px;
     height: 20px;
     margin-top: 4px;
-    margin-left: calc(4px);
-    -webkit-border-radius: 50px;
-    -moz-border-radius: 50px;
+    margin-left: 8px;
     border-radius: 50px;
     border: none;
-    background-size: 18px 18px;
+    background-size: 26px 26px;
     background-repeat: no-repeat;
     background-position: center;
     background-image: url("../assets/images/cancel.png"),
-                    radial-gradient(rgba(180, 40, 40, 0.85),rgba(240, 40, 40, 0.7));
+    radial-gradient(rgba(240, 40, 40, 0.85), rgba(250, 10, 10, 0.7));
 }
+
 .btn-minimize {
     width: 20px;
     height: 20px;
     margin-top: 4px;
-    margin-left: calc(24px * 1 + 4px);
-    -webkit-border-radius: 50px;
-    -moz-border-radius: 50px;
+    margin-left: 2px;
     border-radius: 50px;
     border: none;
     background-color: #888;
-    background-size: 18px 18px;
+    background-size: 26px 26px;
     background-repeat: no-repeat;
     background-position: center;
     background-image: url("../assets/images/minimize.png");
+}
+
+.btn-plus {
+    width: 20px;
+    height: 20px;
+    margin-top: 4px;
+    margin-left: 2px;
+    border-radius: 50px;
+    border: none;
+    background-color: #888;
+    background-size: 26px 26px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url("../assets/images/add.png");
+}
+
+.shell .status-bar .title {
+    margin-left: calc(28px * 2 + 4px);
 }

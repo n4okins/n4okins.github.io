@@ -200,22 +200,27 @@ def clear_console():
         }
     }
 
-    $('#nsh-shell').resizable(
+    let nsh_shell = $("#nsh-shell");
+
+    nsh_shell.resizable(
         {
             minHeight: window.innerHeight * 0.1,
-            minWidth: window.innerWidth * 0.33
+            minWidth: window.innerWidth * 0.2,
+            autoHide: true,
         }
     ).draggable(
         {
-            handle: '> .status-bar .title'
+            handle: '> .status-bar',
         }
     );
+
+    $(".btn-minimize").click(function (event) {
+        $("#nsh-shell .content").slideToggle(600, () => {
+            $(".btn-minimize").toggleClass("btn-plus");
+        });
+    });
 
     window.console_ready = main();
 });
 
 
-$(".terminal-btn-minimize").click(function(){
-    $(this).toggleClass('btn-plus');
-    $(".widget-content").slideToggle();
-});
