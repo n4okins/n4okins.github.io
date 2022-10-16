@@ -15,8 +15,8 @@ if __output_dir__.exists():
     shutil.rmtree(__output_dir__)
 
 env = Environment(loader=FileSystemLoader(__templates_dir__, encoding="utf-8"))
-
-BASE_URL = Path("https://n4okins.github.io/")
+DEBUG = False
+BASE_URL = Path("/n4okins.github.io/docs/") if DEBUG else Path("/")
 
 
 class TemplateFuncTools:
