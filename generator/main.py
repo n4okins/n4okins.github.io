@@ -16,13 +16,13 @@ if __output_dir__.exists():
 
 env = Environment(loader=FileSystemLoader(__templates_dir__, encoding="utf-8"))
 
-BASE_URL = "/n4okins.github.io/docs"
+BASE_URL = Path("https://n4okins.github.io/")
 
 
 class TemplateFuncTools:
     @staticmethod
     def solve_url(path: str):
-        return BASE_URL + path
+        return path
 
 
 env.globals.update(
