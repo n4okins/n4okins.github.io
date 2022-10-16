@@ -1,0 +1,6 @@
+<h1>blog top</h1>
+{% for path, article in others.ROUTING.items() %}
+    {% if "blog" in path.parts %}
+        <a href={{ others.BASE_URL / article.relative_path }}>{{ article.title }}</a>
+    {% endif %}
+{% endfor %}
