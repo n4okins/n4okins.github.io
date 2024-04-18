@@ -109,3 +109,9 @@ a {
     color-scheme: dark;
   }
 }
+
+.keep-all-break-word {
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  /* overflow-wrap: anywhere; が2024年1月8日現在で一番良い */
+}
