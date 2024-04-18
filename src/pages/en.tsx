@@ -7,7 +7,7 @@ export default function English() {
             <div className="container mx-auto max-w-5xl">
                 <div className="bg-gray-800 p-8 rounded-lg">
                     <h1 className="text-4xl font-bold mb-2 text-white">Naoki Shikoda</h1>
-                    <p className="text-l">First-year master's student in the Information Science area, Advanced Science and Technology, Nara Institute of Science and Technology</p>
+                    <p className="text-l">First-year master&apos;s student in the Information Science area, Advanced Science and Technology, Nara Institute of Science and Technology</p>
                     <div className="flex space-x-4 mt-4 align-center">
                         <a href="https://github.com/n4okins" target="_blank" className="text-white hover:text-gray-300">
                             <FaGithub size={30} />
@@ -23,11 +23,11 @@ export default function English() {
                     <p className="keep-all-break-word">
                         Based in Nara.
                         I am interested in machine learning, particularly in natural language processing, image processing, and graph neural networks.
-                        I also have an interest in security. I'm not very knowledgeable about the lower layers yet, but I'm gradually learning.
+                        I also have an interest in security. I&apos;m not very knowledgeable about the lower layers yet, but I&apos;m gradually learning.
                     </p>
                     <p>I mainly use Python, dabbling in various programming languages.</p>
                     <p>I occasionally try to learn foreign languages, but it seems I need to study English first.</p>
-                    <p>I'm not a big drinker, but I've recently taken a liking to whiskey.</p>
+                    <p>I&apos;m not a big drinker, but I&apos;ve recently taken a liking to whiskey.</p>
                 </section>
 
                 <section className="p-8 border-t border-gray-700 mt-4">
@@ -41,7 +41,7 @@ export default function English() {
                                         Member of the Natural Language Processing Laboratory (Watanabe Lab)
                                         <Link href="https://nlp.naist.jp/en/" target="_blank" className="mx-2 text-blue-400 hover:text-blue-200">
                                             Nara Institute of Science and Technology
-                                        </Link> First year of the master's program</td>
+                                        </Link> First year of the master&apos;s program</td>
                                 </tr>
 
                                 <tr>
