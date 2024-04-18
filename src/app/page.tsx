@@ -1,12 +1,15 @@
 import Link from "next/link";
+import { HomeIcon, AcademicCapIcon, BriefcaseIcon, LightBulbIcon, CheckCircleIcon } from '@heroicons/react/24/solid';
 
 export default function Home() {
   return (
-    <div className="bg-gray-100 text-gray-800 min-h-screen py-12 px-4 font-serif">
+    <div className="bg-gray-100 text-gray-800 min-h-screen py-12 px-4 font-sans">
       <div className="container mx-auto max-w-4xl">
         <h1 className="text-4xl font-bold mb-8">こんにちは！</h1>
         <section className="mb-12 border-b-2 border-gray-300 pb-6">
-          <h2 className="text-2xl font-bold mb-4">興味関心</h2>
+          <h2 className="text-2xl font-bold mb-4 flex items-center">
+            <HomeIcon className="h-6 w-6 mr-2" /> 興味関心
+          </h2>
           <p className="mb-2">
             機械学習 (特に自然言語処理, 画像処理, グラフニューラルネットワーク)
           </p>
@@ -15,7 +18,9 @@ export default function Home() {
           </p>
         </section>
         <section className="mb-12 border-b-2 border-gray-300 pb-6">
-          <h2 className="text-2xl font-bold mb-4">略歴</h2>
+          <h2 className="text-2xl font-bold mb-4 flex items-center">
+            <AcademicCapIcon className="h-6 w-6 mr-2" /> 略歴
+          </h2>
           <ul>
             <li className="mb-4">
               <div className="font-bold mb-1">2020.04</div>
@@ -38,7 +43,9 @@ export default function Home() {
           </ul>
         </section>
         <section className="mb-12 border-b-2 border-gray-300 pb-6">
-          <h2 className="text-2xl font-bold mb-4">インターン</h2>
+          <h2 className="text-2xl font-bold mb-4 flex items-center">
+            <BriefcaseIcon className="h-6 w-6 mr-2" /> インターン
+          </h2>
           <ul>
             <li className="mb-4">
               <div className="font-bold mb-1">2022.10 - 2023.04</div>
@@ -51,7 +58,9 @@ export default function Home() {
           </ul>
         </section>
         <section className="mb-12 border-b-2 border-gray-300 pb-6">
-          <h2 className="text-2xl font-bold mb-4">他</h2>
+          <h2 className="text-2xl font-bold mb-4 flex items-center">
+            <LightBulbIcon className="h-6 w-6 mr-2" /> 他
+          </h2>
           <ul>
             <li className="mb-4">
               <div className="font-bold mb-1">2022.10</div>
@@ -64,7 +73,9 @@ export default function Home() {
           </ul>
         </section>
         <section>
-          <h2 className="text-2xl font-bold mb-4">資格</h2>
+          <h2 className="text-2xl font-bold mb-4 flex items-center">
+            <CheckCircleIcon className="h-6 w-6 mr-2" /> 資格
+          </h2>
           <ul>
             <li>ITパスポート</li>
             <li>応用情報技術者</li>
