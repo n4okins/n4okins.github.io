@@ -82,7 +82,7 @@ export default function English() {
                                     <td className="px-4 py-2 border-gray-700">April 2023 - Present</td>
                                     <td className="px-4 py-2 border-gray-700">
                                         <Link href="https://nnn.ed.jp/recruit/special/intern/" target="_blank" className="text-blue-400 hover:text-blue-200">
-                                            Kadokawa Dwango Academy NCodeLabo
+                                            KADOKAWA DWANGO Educational Institute NCodeLabo
                                         </Link>
                                     </td>
                                     <td className="px-4 py-2 border-gray-700">Instructor</td>
@@ -91,7 +91,7 @@ export default function English() {
                                     <td className="px-4 py-2 border-gray-700">October 2022 - April 2023</td>
                                     <td className="px-4 py-2 border-gray-700">
                                         <Link href="https://nnn.ed.jp/recruit/special/intern/" target="_blank" className="text-blue-400 hover:text-blue-200">
-                                            Kadokawa Dwango Academy N/S High School
+                                            KADOKAWA DWANGO Educational Institute N/S High School
                                         </Link>
                                     </td>
                                     <td className="px-4 py-2 border-gray-700">Programming TA</td>
@@ -109,7 +109,7 @@ export default function English() {
                         </li>
                         <li>
                             <Link href="https://www.ipa.go.jp/jinzai/security-camp/2022/zenkoku/index.html" target="_blank" className="mr-4 text-blue-400 hover:text-blue-200">
-                                Security Camp National Convention Online 2022
+                                Security Camp Online 2022
                             </Link> Completed AI Security Course (D Course)
                         </li>
                     </ul>
