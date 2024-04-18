@@ -14,11 +14,12 @@ export default function English() {
                         <section className="p-8 border-t border-gray-700 mt-4">
                             <h2 className="text-2xl font-bold mb-4">Interests</h2>
                             <p>
-                                I am interested in machine learning, especially natural language processing, image processing, and graph neural networks.
+                                I live in Nara.
+                                I have a strong interest in machine learning, especially in natural language processing, image processing, and graph neural networks.
+                                I am also interested in security. While I&apos;m not very knowledgeable about low-level details yet, I am gradually learning more.
                             </p>
-                            <p>
-                                I also have an interest in security. Although I&apos;m not very familiar with lower-level details, I would like to learn more about it in the future.
-                            </p>
+                            <p>I primarily use Python, but I enjoy dabbling in various programming languages.</p>
+                            <p>I&apos;m not a heavy drinker, but lately, I&apos;ve developed a liking for whiskey.</p>
                         </section>
 
                         <section className="p-8 border-t border-gray-700 mt-4">

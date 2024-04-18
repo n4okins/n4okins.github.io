@@ -6,7 +6,7 @@ import React, { useState } from "react"
 export default function Home() {
   const [lang, setLang] = useState("ja");
   return (
-    <div className="container text-wrap">
+    <div className="text-wrap">
       <div className="flex justify-end mt-2">
         <button
           onClick={() => setLang('ja')}
