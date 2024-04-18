@@ -8,7 +8,7 @@ export default function English() {
                     <div className="container mx-auto max-w-5xl">
                         <div className="bg-gray-800 p-8 rounded-lg">
                             <h1 className="text-4xl font-bold mb-2 text-white">Naoki Shikoda</h1>
-                            <p className="text-l">First-year Master's student in Nara Institute of Science and Technology</p>
+                            <p className="text-l">First-year Master&apos;s student in Nara Institute of Science and Technology</p>
                         </div>
 
                         <section className="p-8 border-t border-gray-700 mt-4">
@@ -17,7 +17,7 @@ export default function English() {
                                 I am interested in machine learning, especially natural language processing, image processing, and graph neural networks.
                             </p>
                             <p>
-                                I also have an interest in security. Although I'm not very familiar with lower-level details, I would like to learn more about it in the future.
+                                I also have an interest in security. Although I&apos;m not very familiar with lower-level details, I would like to learn more about it in the future.
                             </p>
                         </section>
 
