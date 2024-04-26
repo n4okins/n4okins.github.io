@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: http://n4okins.com
+
+# Sitemaps
+Sitemap: http://n4okins.com/sitemap.xml
