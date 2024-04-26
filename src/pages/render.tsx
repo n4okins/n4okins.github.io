@@ -149,8 +149,8 @@ export default function ContentPage({ lang }: { lang: string }) {
                                 </tbody>
                             </table>
                         </section>
-
                         <p className="text-center text-sm mt-8 text-gray-500">{content?.updated}</p>
+                        <p className="text-center text-xs py-4 text-gray-500">Powerd By Next.js + Typescript</p>
                     </div>
                 </div>
             </div>
