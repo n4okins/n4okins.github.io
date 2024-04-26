@@ -15,10 +15,10 @@ export default function ContentPage({ lang }: { lang: string }) {
                             </p>
                             <div className="flex space-x-4 mt-4 align-center">
                                 <a href="https://github.com/n4okins" target="_blank" className="dark:text-white hover:text-gray-300">
-                                    <FaGithub size={30} />
+                                    <FaGithub size={30} role="img" aria-label="Github icon" />
                                 </a>
                                 <a href="https://twitter.com/n4okins" target="_blank" className="dark:text-white hover:text-gray-300">
-                                    <FaTwitter size={30} />
+                                    <FaTwitter size={30} role="img" aria-label="Twitter icon" />
                                 </a>
                             </div>
                         </div>
@@ -34,7 +34,9 @@ export default function ContentPage({ lang }: { lang: string }) {
                         </section>
 
                         <section className="p-8 border-t border-gray-700 mt-4">
-                            <h2 className="text-2xl font-bold mb-4">{content?.background?.title}</h2>
+                            <h2 className="text-2xl font-bold mb-4">
+                                {content?.background?.title}
+                            </h2>
                             <div className="overflow-x-auto rounded-lg shadow-lg">
                                 <table className="w-full text-left table-auto dark:bg-gray-800 bg-gray-100">
                                     <tbody>
@@ -79,24 +81,25 @@ export default function ContentPage({ lang }: { lang: string }) {
                                                 {content?.background?.content[4].content}
                                             </td>
                                         </tr>
-
                                     </tbody>
                                 </table>
                             </div>
                         </section>
 
                         <section className="p-8 border-t border-gray-700 mt-4">
-                            <h2 className="text-2xl font-bold mb-4">{content?.internship?.title}</h2>
+                            <h2 className="text-2xl font-bold mb-4">
+                                {content?.internship?.title}
+                            </h2>
                             <div className="overflow-x-auto rounded-lg shadow-lg">
                                 <table className="w-full text-left table-auto dark:bg-gray-800 bg-gray-100">
                                     <tbody>
                                         {content?.internship?.content?.map((item: any, index: number) => (
                                             <tr key={index}>
-                                                <td className="px-4 py-2 border-gray-700">{item.td}</td>
-                                                <td className="px-4 py-2 border-gray-700">
+                                                <td key="`${index}-1`" className="px-4 py-2 border-gray-700">{item.td}</td>
+                                                <td key="`${index}-2`" className="px-4 py-2 border-gray-700">
                                                     {item.content[0]}
                                                 </td>
-                                                <td className="-px-4 py-2 border-gray-700">
+                                                <td key="`${index}-3`" className="-px-4 py-2 border-gray-700">
                                                     {item.content[1]}
                                                 </td>
                                             </tr>
@@ -121,11 +124,11 @@ export default function ContentPage({ lang }: { lang: string }) {
                                 <tbody>
                                     {content?.publication?.content?.map((item: any, index: number) => (
                                         <tr key={index}>
-                                            <td className="px-4 py-2 border-gray-700">{item.td}</td>
-                                            <td className="px-4 py-2 border-gray-700">
+                                            <td key="`${index}-1`" className="px-4 py-2 border-gray-700">{item.td}</td>
+                                            <td key="`${index}-2`" className="px-4 py-2 border-gray-700">
                                                 {item.content[0]}
                                             </td>
-                                            <td className="px-4 py-2 border-gray-700">
+                                            <td key="`${index}-3`" className="px-4 py-2 border-gray-700">
                                                 {item.content[1]}
                                             </td>
                                         </tr>
@@ -135,13 +138,15 @@ export default function ContentPage({ lang }: { lang: string }) {
                         </section>
 
                         <section className="p-8 border-t border-gray-700 mt-4">
-                            <h2 className="text-2xl font-bold mb-4">{content?.certification?.title}</h2>
+                            <h2 className="text-2xl font-bold mb-4">
+                                {content?.certification?.title}
+                            </h2>
                             <table className="w-full text-center table-auto dark:bg-gray-800 bg-gray-100 border-h">
                                 <tbody>
                                     {content?.certification?.content?.map((item: any, index: number) => (
                                         <tr key={index} className={item.className}>
-                                            <td className="px-4 py-2 border-gray-400">{item.td}</td>
-                                            <td className="px-4 py-2 border-gray-400">
+                                            <td key="`${index}-1`" className="px-4 py-2 border-gray-400">{item.td}</td>
+                                            <td key="`${index}-2`" className="px-4 py-2 border-gray-400">
                                                 {item.content}
                                             </td>
                                         </tr>

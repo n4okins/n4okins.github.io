@@ -24,7 +24,7 @@ export default function content(lang: string) {
                             "td": "現在",
                             "content": [
                                 "情報科学領域",
-                                <Link href='https://nlp.naist.jp/ja/' target='_blank' className='mx-2 text-blue-400 hover:text-blue-200' >
+                                <Link href='https://nlp.naist.jp/ja/' target='_blank' className='mx-2 text-blue-400 hover:text-blue-200' key="link" >
                                     自然言語処理学研究室（渡辺研究室）
                                 </Link>,
                                 "所属 博士前期課程 1年"
@@ -42,7 +42,7 @@ export default function content(lang: string) {
                             "td": " | ",
                             "content": [
                                 "同学科",
-                                <Link href='https://www.ke.tcu.ac.jp/labo/is07/' target='_blank' className='mx-2 text-blue-400 hover:text-blue-200'>
+                                <Link href='https://www.ke.tcu.ac.jp/labo/is07/' target='_blank' className='mx-2 text-blue-400 hover:text-blue-200' key="link">
                                     神野研究室
                                 </Link>,
                                 "所属"
@@ -60,7 +60,7 @@ export default function content(lang: string) {
                         {
                             "td": "2022.10 - 現在",
                             "content": [
-                                <Link href="https://nnn.ed.jp/recruit/special/intern/" target="_blank" className="text-blue-400 hover:text-blue-200">
+                                <Link href="https://nnn.ed.jp/recruit/special/intern/" key="link" target="_blank" className="text-blue-400 hover:text-blue-200">
                                     角川ドワンゴ学園 N Code Labo
                                 </Link>,
                                 "講師"
@@ -69,7 +69,7 @@ export default function content(lang: string) {
                         {
                             "td": "2022.04 - 2022.10",
                             "content": [
-                                <Link href="https://nnn.ed.jp/recruit/special/intern/" target="_blank" className="text-blue-400 hover:text-blue-200">
+                                <Link href="https://nnn.ed.jp/recruit/special/intern/" key="link" target="_blank" className="text-blue-400 hover:text-blue-200">
                                     角川ドワンゴ学園 N/S高校
                                 </Link>,
                                 "プログラミングTA"
@@ -81,13 +81,13 @@ export default function content(lang: string) {
                     "title": "その他",
                     "content": [
                         [
-                            <Link href="https://www.security-camp.or.jp/minicamp/online2021.html" target="_blank" className="mr-4 text-blue-400 hover:text-blue-200">
+                            <Link href="https://www.security-camp.or.jp/minicamp/online2021.html" key="link" target="_blank" className="mr-4 text-blue-400 hover:text-blue-200">
                                 セキュリティ・ミニキャンプ オンライン 2021
                             </Link>,
                             "修了"
                         ],
                         [
-                            <Link href="https://www.ipa.go.jp/jinzai/security-camp/2022/zenkoku/index.html" target="_blank" className="mr-4 text-blue-400 hover:text-blue-200">
+                            <Link href="https://www.ipa.go.jp/jinzai/security-camp/2022/zenkoku/index.html" key="link" target="_blank" className="mr-4 text-blue-400 hover:text-blue-200">
                                 セキュリティ・キャンプ全国大会 オンライン 2022
                             </Link>, "AIセキュリティコース（Dコース）修了"
                         ]
@@ -100,7 +100,7 @@ export default function content(lang: string) {
                             "td": "2023.08",
                             "content": [
                                 "データ構造としてのグラフ構造の検討",
-                                <Link href="https://sites.google.com/shibaura-it.ac.jp/nonlinear-summer/ホーム" target="_blank" className="text-blue-400 hover:text-blue-200">
+                                <Link href="https://sites.google.com/shibaura-it.ac.jp/nonlinear-summer/ホーム" key="link" target="_blank" className="text-blue-400 hover:text-blue-200">
                                     非線形ワークショップ 夏の大会＠ホテル光風閣くわるび （ポスター発表）
                                 </Link>,
                             ]
@@ -109,7 +109,7 @@ export default function content(lang: string) {
                             "td": "2022.12",
                             "content": [
                                 "グラフニューラルネットワークの画像処理への適用に関する検討",
-                                <Link href="http://www.hisenkei.net/NLWS/20221217.html" target="_blank" className="text-blue-400 hover:text-blue-200">
+                                <Link href="http://www.hisenkei.net/NLWS/20221217.html" target="_blank" key="link" className="text-blue-400 hover:text-blue-200">
                                     非線形ワークショップ＠芝浦工業大学 （ポスター発表）
                                 </Link>,
                             ]
@@ -162,7 +162,7 @@ export default function content(lang: string) {
                             "td": "Current",
                             "content": [
                                 "Member of the ",
-                                <Link href="https://nlp.naist.jp/en/" target="_blank" className="mx-2 text-blue-400 hover:text-blue-200">
+                                <Link href="https://nlp.naist.jp/en/" target="_blank" key="link" className="mx-2 text-blue-400 hover:text-blue-200">
                                     Natural Language Processing Laboratory (Watanabe Lab)
                                 </Link>,
                                 "First year of the master's program"
@@ -180,7 +180,7 @@ export default function content(lang: string) {
                             "td": " | ",
                             "content": [
                                 "Member of the ",
-                                <Link href='https://www.ke.tcu.ac.jp/labo/is07/' target='_blank' className='mx-2 text-blue-400 hover:text-blue-200'>
+                                <Link href='https://www.ke.tcu.ac.jp/labo/is07/' target='_blank' key="link" className='mx-2 text-blue-400 hover:text-blue-200'>
                                     Jinno Lab
                                 </Link>,
                                 "at the same department"
@@ -198,7 +198,7 @@ export default function content(lang: string) {
                         {
                             "td": "October 2022 - Present",
                             "content": [
-                                <Link href="https://nnn.ed.jp/recruit/special/intern/" target="_blank" className="text-blue-400 hover:text-blue-200">
+                                <Link href="https://nnn.ed.jp/recruit/special/intern/" target="_blank" key="link" className="text-blue-400 hover:text-blue-200">
                                     KADOKAWA DWANGO Educational Institute N Code Labo
                                 </Link>,
                                 "Instructor"
@@ -207,7 +207,7 @@ export default function content(lang: string) {
                         {
                             "td": "April 2022 - October 2022",
                             "content": [
-                                <Link href="https://nnn.ed.jp/recruit/special/intern/" target="_blank" className="text-blue-400 hover:text-blue-200">
+                                <Link href="https://nnn.ed.jp/recruit/special/intern/" target="_blank" key="link" className="text-blue-400 hover:text-blue-200">
                                     KADOKAWA DWANGO Educational Institute N/S High School
                                 </Link>,
                                 "Programming Teaching Assistant"
@@ -219,13 +219,13 @@ export default function content(lang: string) {
                     "title": "Other",
                     "content": [
                         [
-                            <Link href="https://www.security-camp.or.jp/minicamp/online2021.html" target="_blank" className="mr-4 text-blue-400 hover:text-blue-200">
+                            <Link href="https://www.security-camp.or.jp/minicamp/online2021.html" target="_blank" key="link" className="mr-4 text-blue-400 hover:text-blue-200">
                                 Security Mini Camp Online 2021
                             </Link>,
                             "Completed"
                         ],
                         [
-                            <Link href="https://www.ipa.go.jp/jinzai/security-camp/2022/zenkoku/index.html" target="_blank" className="mr-4 text-blue-400 hover:text-blue-200">
+                            <Link href="https://www.ipa.go.jp/jinzai/security-camp/2022/zenkoku/index.html" key="link" target="_blank" className="mr-4 text-blue-400 hover:text-blue-200">
                                 Security Camp Online 2022
                             </Link>, "Comleted AI Security Course (D Course)"
                         ]
@@ -238,7 +238,7 @@ export default function content(lang: string) {
                             "td": "2023.08",
                             "content": [
                                 "データ構造としてのグラフ構造の検討 ",
-                                <Link href="https://sites.google.com/shibaura-it.ac.jp/nonlinear-summer/ホーム" target="_blank" className="text-blue-400 hover:text-blue-200">
+                                <Link href="https://sites.google.com/shibaura-it.ac.jp/nonlinear-summer/ホーム" key="link" target="_blank" className="text-blue-400 hover:text-blue-200">
                                     Non Linear Workshop ＠ Hotel Kuwarubi （poster）
                                 </Link>,
                             ]
@@ -247,7 +247,7 @@ export default function content(lang: string) {
                             "td": "2022.12",
                             "content": [
                                 "グラフニューラルネットワークの画像処理への適用に関する検討",
-                                <Link href="http://www.hisenkei.net/NLWS/20221217.html" target="_blank" className="text-blue-400 hover:text-blue-200">
+                                <Link href="http://www.hisenkei.net/NLWS/20221217.html" target="_blank" key="link" className="text-blue-400 hover:text-blue-200">
                                     Non Linear Workshop ＠Shibaura Institute of technology （poster）
                                 </Link>,
                             ]
@@ -262,12 +262,12 @@ export default function content(lang: string) {
                         { "td": "March 2024", "content": "Degree in Engineering" },
                         { "td": "April 2023", "content": "TOEIC L&R 665" },
                         {
-                            "td": "June 2022", "content": <Link href="https://www.ipa.go.jp/shiken/kubun/ap.html" target="_blank">
+                            "td": "June 2022", "content": <Link href="https://www.ipa.go.jp/shiken/kubun/ap.html" key="link" target="_blank">
                                 Applied Information Technology Engineer
                             </Link>
                         },
                         {
-                            "td": "May 2021", "content": <Link href="https://www.ipa.go.jp/shiken/kubun/ip.html" target="_blank">
+                            "td": "May 2021", "content": <Link href="https://www.ipa.go.jp/shiken/kubun/ip.html" key="link" target="_blank">
                                 IT Passport
                             </Link >
                         },

@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Naoki Shikoda's Page",
-  description: "志子田直輝です。",
+  description: "志子田 直輝です。",
 };
 
 export default function RootLayout({

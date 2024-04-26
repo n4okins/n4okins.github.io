@@ -2,6 +2,6 @@
   "extends": "next/core-web-vitals",
   "rules": {
     "@next/next/no-image-element": "off",
-    "react/jsx-key": "off"
+    "react/jsx-key": "error"
   }
 }
