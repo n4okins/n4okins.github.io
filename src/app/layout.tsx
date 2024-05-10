@@ -17,8 +17,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
+      <script src="https://platform.linkedin.com/badges/js/profile.js" async defer type="text/javascript"></script>
       <body className={inter.className}>{children}</body>
-      <GoogleAnalytics gaId="G-RNH27HRY3B"/>
+      <GoogleAnalytics gaId="G-RNH27HRY3B" />
     </html>
   );
 }

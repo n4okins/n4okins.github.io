@@ -8,13 +8,19 @@ export default function content(lang: string) {
                 "affiliation": "奈良先端科学技術大学院大学 先端科学技術研究科 先端科学技術専攻 情報科学領域 博士前期課程 1年",
                 "interested_in": {
                     "title": "自己紹介",
-                    "content": <p>奈良にいます。
+                    "content": <p>
+                        奈良にいます。
                         機械学習に興味があります。特に自然言語処理、画像処理、グラフニューラルネットワークに関心があります。
                         セキュリティにも興味があります。低レイヤーはあまり詳しくないですが、少しずつ学んでいます。
-                        Pythonをメインに、いろんなプログラミング言語をかじりながら過ごしています。
-                        英語は得意ではないですが、講義も研究室も英語ばかりなので絶賛実践形式で勉強中です。
+                        Pythonをメインに扱っています。よく使っていたフレームワークはPyTorchですが、最近はJax/Flaxにも興味を持っています。
+                        他にTypeScriptやRust、あとCUDAを勉強中です。
+                        英語は得意ではないですが、講義も研究室も英語ばかりなので実践形式で勉強中です。
                         <br />
-                        お酒は量は飲めませんが、最近はウイスキーが好きです。
+                        このページは履歴書というよりは自己紹介ページにしたいので後日修正予定です。
+                        <br />
+                        お酒はウイスキーや日本酒が好きです。
+                        <br />
+                        直近の目標はもっとGitと仲良くなることと、GitHubに草を生やすことです。
                     </p>
                 },
                 "background": {
@@ -121,6 +127,7 @@ export default function content(lang: string) {
                     "content": [
                         { "td": "現在勉強中", "content": "情報処理安全確保支援士試験" },
                         { "td": "現在勉強中", "content": "TOEIC L&R", "className": "border-b border-gray-700 dark:border-gray-100" },
+
                         { "td": "2024.03", "content": "学士（工学）" },
                         { "td": "2023.04", "content": "TOEIC L&R 665" },
                         {
@@ -144,16 +151,20 @@ export default function content(lang: string) {
                 "interested_in": {
                     "title": "About Me",
                     "content": <p>
-                        I am currently studying in Nara.
-                        I am interested in machine learning, especially natural language processing, image processing, and graph neural networks.
-                        I am also interested in security. I&apos;m not very knowledgeble about lower layers yet, but I&apos;m learning little by little.
-
-                        I mainly use Python, dabbling in various programming languages.
-
-                        I&apos;m not good at English, but since all my lectures and research are in English, I&apos;m studying it in a practical way.
+                        I&apos;m currently based in Nara.
+                        I have a keen interest in machine learning, with a particular focus on natural language processing, image processing, and graph neural networks.
+                        I am also interested in security, although I am not very familiar with lower-level details, I am gradually learning more.
+                        My primary programming language is Python. I frequently use the PyTorch framework, but recently I have also become interested in Jax/Flax.
+                        Additionally, I am studying TypeScript, Rust, and CUDA.
+                        English is not my forte, but as both lectures and lab work are conducted in English, I am actively learning through practical application.
                         <br />
-                        I&apos;m not a big drinker, but I&apos;ve recently taken a liking to whiskey.
+                        This page is intended more as an introduction than a resume, so I plan to update it later.
+                        <br />
+                        I enjoy whiskey and sake.
+                        <br />
+                        My immediate goals are to become more familiar with Git and to cultivate more activity on my GitHub profile.
                     </p>
+
                 },
                 "background": {
                     "title": "Background",
@@ -274,7 +285,7 @@ export default function content(lang: string) {
                         { "td": "その他", "content": "Kanji proficiency test, World Heritage test, etc", "className": "bg-gray-300 dark:bg-gray-700" },
                     ]
                 },
-                "updated": "Updated April 26, 2024"
+                "updated": "Updated on May 09, 2024"
             },
         }[lang]
     )
