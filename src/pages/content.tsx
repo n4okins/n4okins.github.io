@@ -87,15 +87,20 @@ export default function content(lang: string) {
                     "title": "その他",
                     "content": [
                         [
-                            <Link href="https://www.security-camp.or.jp/minicamp/online2021.html" key="link" target="_blank" className="mr-4 text-blue-400 hover:text-blue-200">
-                                セキュリティ・ミニキャンプ オンライン 2021
-                            </Link>,
-                            "修了"
+                            <Link href="https://www.seccap.jp/gs/index.html" key="link" target="_blank" className="mr-4 text-blue-400 hover:text-blue-200">
+                                5大学連携 enPiT-Security (SecCap)
+                            </Link>, "受講中 (2024年度)"
                         ],
                         [
                             <Link href="https://www.ipa.go.jp/jinzai/security-camp/2022/zenkoku/index.html" key="link" target="_blank" className="mr-4 text-blue-400 hover:text-blue-200">
                                 セキュリティ・キャンプ全国大会 オンライン 2022
                             </Link>, "AIセキュリティコース（Dコース）修了"
+                        ],
+                        [
+                            <Link href="https://www.security-camp.or.jp/minicamp/online2021.html" key="link" target="_blank" className="mr-4 text-blue-400 hover:text-blue-200">
+                                セキュリティ・ミニキャンプ オンライン 2021
+                            </Link>,
+                            "修了"
                         ]
                     ]
                 },
@@ -230,16 +235,21 @@ export default function content(lang: string) {
                     "title": "Other",
                     "content": [
                         [
-                            <Link href="https://www.security-camp.or.jp/minicamp/online2021.html" target="_blank" key="link" className="mr-4 text-blue-400 hover:text-blue-200">
-                                Security Mini Camp Online 2021
-                            </Link>,
-                            "Completed"
+                            <Link href="https://www.seccap.jp/gs/index.html" key="link" target="_blank" className="mr-4 text-blue-400 hover:text-blue-200">
+                                enPiT-Security (SecCap)
+                            </Link>, "Currently Taking a coruse (2024)"
                         ],
                         [
                             <Link href="https://www.ipa.go.jp/jinzai/security-camp/2022/zenkoku/index.html" key="link" target="_blank" className="mr-4 text-blue-400 hover:text-blue-200">
                                 Security Camp Online 2022
                             </Link>, "Comleted AI Security Course (D Course)"
-                        ]
+                        ],
+                        [
+                            <Link href="https://www.security-camp.or.jp/minicamp/online2021.html" target="_blank" key="link" className="mr-4 text-blue-400 hover:text-blue-200">
+                                Security Mini Camp Online 2021
+                            </Link>,
+                            "Completed"
+                        ],
                     ]
                 },
                 "publication": {
