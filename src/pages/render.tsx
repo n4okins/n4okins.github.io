@@ -1,4 +1,4 @@
-import { FaGithub, FaTwitter, FaLinkedin } from 'react-icons/fa';
+import { FaGithub, FaTwitter, FaLinkedin, FaLink } from 'react-icons/fa';
 import Content from '@/pages/content';
 
 export default function ContentPage({ lang }: { lang: string }) {
@@ -22,6 +22,9 @@ export default function ContentPage({ lang }: { lang: string }) {
                                 </a>
                                 <a href="https://www.linkedin.com/in/n4okins/" target="_blank" className="dark:text-white hover:text-gray-300">
                                     <FaLinkedin size={30} role="img" aria-label="Linkedin icon" />
+                                </a>
+                                <a href="https://blog.n4okins.com" target="_blank" className="dark:text-white hover:text-gray-300">
+                                    <FaLink size={30} role="img" aria-label="Blog link icon" />
                                 </a>
                             </div>
                         </div>
