@@ -24,7 +24,7 @@ export default function ContentPage({ lang }: { lang: string }) {
                                     <FaLinkedin size={30} role="img" aria-label="Linkedin icon" />
                                 </a>
                                 <a href="https://blog.n4okins.com" target="_blank" className="dark:text-white hover:text-gray-300">
-                                    <FaLink size={30} role="img" aria-label="Blog link icon" />
+                                    <h2>blog</h2>
                                 </a>
                             </div>
                         </div>
