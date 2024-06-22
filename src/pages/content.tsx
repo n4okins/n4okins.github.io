@@ -13,7 +13,7 @@ export default function content(lang: string) {
                         機械学習に興味があります。特に自然言語処理、画像処理、グラフニューラルネットワークに関心があります。
                         セキュリティにも興味があります。低レイヤーは少しずつ学んでいます。
                         Pythonをメインに扱っています。よく使っていたフレームワークはPyTorchですが、最近はJax/Flaxにも興味を持っています。
-                        他にTypeScriptやRust、あとCUDAを勉強中です。
+                        他にTypeScriptやRustを勉強中です。
                         英語は得意ではないですが、講義も研究室も英語ばかりなので実践形式で勉強中です。
                         <br />
                         このページは履歴書というよりは自己紹介ページにしたいので後日修正予定です。
@@ -160,7 +160,7 @@ export default function content(lang: string) {
                         I have a keen interest in machine learning, with a particular focus on natural language processing, image processing, and graph neural networks.
                         I am also interested in security, although I am not very familiar with lower-level details, I am gradually learning more.
                         My primary programming language is Python. I frequently use the PyTorch framework, but recently I have also become interested in Jax/Flax.
-                        Additionally, I am studying TypeScript, Rust, and CUDA.
+                        Additionally, I am studying TypeScript and Rust.
                         English is not my forte, but as both lectures and lab work are conducted in English, I am actively learning through practical application.
                         <br />
                         This page is intended more as an introduction than a resume, so I plan to update it later.
