@@ -16,11 +16,9 @@ export default function content(lang: string) {
                         他にTypeScriptやRustを勉強中です。
                         英語は得意ではないですが、講義も研究室も英語ばかりなので実践形式で勉強中です。
                         <br />
-                        このページは履歴書というよりは自己紹介ページにしたいので後日修正予定です。
-                        <br />
                         お酒はウイスキーや日本酒が好きです。
+                        最近は研究に集中しています。
                         <br />
-                        直近の目標はもっとGitと仲良くなることと、GitHubに草を生やすことです。
                     </p>
                 },
                 "background": {
@@ -108,6 +106,15 @@ export default function content(lang: string) {
                     "title": "発表等",
                     "content": [
                         {
+                            "td": "2024.09 (予定)",
+                            "content": [
+                                "画像とテキストの共通構造はV&Lモデルにいかなる形で埋め込まれているか",
+                                <Link href="https://yans.anlp.jp/entry/yans2024program" key="link" target="_blank" className="text-blue-400 hover:text-blue-200">
+                                    第19回 YANS(言語処理学会若手支援事業) シンポジウム （ポスター発表）
+                                </Link>,
+                            ]
+                        },
+                        {
                             "td": "2023.08",
                             "content": [
                                 "データ構造としてのグラフ構造の検討",
@@ -167,7 +174,7 @@ export default function content(lang: string) {
                         <br />
                         I enjoy whiskey and sake.
                         <br />
-                        My immediate goals are to become more familiar with Git and to cultivate more activity on my GitHub profile.
+                        I am currently focusing on my research.
                     </p>
 
                 },
@@ -255,6 +262,15 @@ export default function content(lang: string) {
                 "publication": {
                     "title": "Publications",
                     "content": [
+                        {
+                            "td": "2024.09 (Scheduled)",
+                            "content": [
+                                "How are images and text embedded in the V&L model?",
+                                <Link href="https://yans.anlp.jp/entry/yans2024program" key="link" target="_blank" className="text-blue-400 hover:text-blue-200">
+                                    The 19th YANS (Young Researchers Association for Natural Language Processing) Symposium (poster presentation)
+                                </Link>,
+                            ]
+                        },
                         {
                             "td": "2023.08",
                             "content": [

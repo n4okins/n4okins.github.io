@@ -5,9 +5,9 @@ export default function ContentPage({ lang }: { lang: string }) {
     const content: any = Content(lang);
     return (
         <div className="bg-gray-200 dark:bg-gray-800 dark:text-gray-300 min-h-screen py-2 px-4 font-sans">
-            <div className="container mx-auto max-w-7xl">
+            <div className="container mx-auto max-w-12xl">
                 <div className="dark:bg-gray-900 dark:text-gray-300 min-h-screen py-4 px-4 font-sans">
-                    <div className="container mx-auto max-w-6xl">
+                    <div className="container mx-auto max-w-9xl">
                         <div className="dark:bg-gray-700 p-8 rounded-lg">
                             <h1 className="text-4xl font-bold mb-2 dark:text-white">{content?.name}</h1>
                             <p className="text-l">
