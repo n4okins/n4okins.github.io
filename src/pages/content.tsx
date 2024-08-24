@@ -155,7 +155,7 @@ export default function content(lang: string) {
                         { "td": "その他", "content": "漢字検定2級, 世界遺産検定2級など", "className": "bg-gray-300 dark:bg-gray-700" },
                     ]
                 },
-                "updated": "2024年6月22日更新"
+                "updated": "2024年8月24日更新"
             },
             "en": {
                 "name": "Naoki Shikoda",
@@ -311,8 +311,8 @@ export default function content(lang: string) {
                         { "td": "その他", "content": "Kanji proficiency test, World Heritage test, etc", "className": "bg-gray-300 dark:bg-gray-700" },
                     ]
                 },
-                "updated": "Updated on June 22, 2024"
-            },
+                "updated": "Updated on August 24, 2024"
+            }
         }[lang]
     )
 }
