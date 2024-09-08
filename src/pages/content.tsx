@@ -106,11 +106,11 @@ export default function content(lang: string) {
                     "title": "発表等",
                     "content": [
                         {
-                            "td": "2024.09 (予定)",
+                            "td": "2024.09",
                             "content": [
                                 "画像とテキストの共通構造はV&Lモデルにいかなる形で埋め込まれているか",
                                 <Link href="https://yans.anlp.jp/entry/yans2024program" key="link" target="_blank" className="text-blue-400 hover:text-blue-200">
-                                    第19回 YANS(言語処理学会若手支援事業) シンポジウム （ポスター発表）
+                                    第19回 YANSシンポジウム（ポスター発表）
                                 </Link>,
                             ]
                         },
@@ -155,7 +155,7 @@ export default function content(lang: string) {
                         { "td": "その他", "content": "漢字検定2級, 世界遺産検定2級など", "className": "bg-gray-300 dark:bg-gray-700" },
                     ]
                 },
-                "updated": "2024年8月24日更新"
+                "updated": "2024年09月09日更新"
             },
             "en": {
                 "name": "Naoki Shikoda",
@@ -263,11 +263,11 @@ export default function content(lang: string) {
                     "title": "Publications",
                     "content": [
                         {
-                            "td": "2024.09 (Scheduled)",
+                            "td": "2024.09",
                             "content": [
-                                "How are images and text embedded in the V&L model?",
+                                "画像とテキストの共通構造はV&Lモデルにいかなる形で埋め込まれているか",
                                 <Link href="https://yans.anlp.jp/entry/yans2024program" key="link" target="_blank" className="text-blue-400 hover:text-blue-200">
-                                    The 19th YANS (Young Researchers Association for Natural Language Processing) Symposium (poster presentation)
+                                    The 19th YANS Symposium (poster)
                                 </Link>,
                             ]
                         },
@@ -311,7 +311,7 @@ export default function content(lang: string) {
                         { "td": "その他", "content": "Kanji proficiency test, World Heritage test, etc", "className": "bg-gray-300 dark:bg-gray-700" },
                     ]
                 },
-                "updated": "Updated on August 24, 2024"
+                "updated": "Updated on September 9, 2024"
             }
         }[lang]
     )
