@@ -1,0 +1,1720 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>QRコード レシーバー</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="./jsQR.js"></script>
+
+        <style>
+            :root {
+                --bg: #f4f6f9;
+                --panel: #ffffff;
+                --text: #1f2937;
+                --muted: #6b7280;
+                --border: #d1d5db;
+                --primary: #007bff;
+                --primary-dark: #0056b3;
+                --success: #28a745;
+                --warning: #f59e0b;
+                --danger: #dc3545;
+                --dark: #111827;
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+                background: var(--bg);
+                color: var(--text);
+            }
+
+            #video {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                opacity: 0;
+                pointer-events: none;
+            }
+
+            #canvas-container {
+                position: relative;
+                width: 100%;
+                max-width: 420px;
+                margin: 0 auto;
+                background: #000;
+                aspect-ratio: 1/1;
+                border-bottom: 3px solid #ccc;
+                overflow: hidden;
+            }
+
+            #camera-canvas {
+                width: 100%;
+                height: 100%;
+                display: block;
+                object-fit: cover;
+            }
+
+            #camera-placeholder {
+                position: absolute;
+                inset: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                gap: 8px;
+                padding: 24px;
+                box-sizing: border-box;
+                color: #e5e7eb;
+                text-align: center;
+                background: linear-gradient(145deg, #111827, #030712);
+            }
+
+            #camera-placeholder .large {
+                font-size: 32px;
+                line-height: 1;
+            }
+
+            #camera-placeholder .small {
+                font-size: 13px;
+                color: #9ca3af;
+                line-height: 1.5;
+            }
+
+            .ui-container {
+                max-width: 680px;
+                margin: 15px auto;
+                padding: 0 15px 36px;
+            }
+
+            .header-area {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                gap: 12px;
+                margin-bottom: 12px;
+            }
+
+            #status-msg {
+                font-size: 15px;
+                font-weight: bold;
+                line-height: 1.5;
+            }
+
+            #sub-status {
+                display: block;
+                margin-top: 2px;
+                font-size: 12px;
+                font-weight: normal;
+                color: var(--muted);
+            }
+
+            .button-row {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+                margin-bottom: 12px;
+            }
+
+            button {
+                border: none;
+                padding: 11px 14px;
+                border-radius: 8px;
+                font-weight: bold;
+                font-size: 14px;
+                cursor: pointer;
+                transition: opacity 0.15s, transform 0.05s;
+            }
+
+            button:active {
+                transform: translateY(1px);
+            }
+
+            button:disabled {
+                opacity: 0.45;
+                cursor: not-allowed;
+                transform: none;
+            }
+
+            .btn-primary {
+                background: var(--primary);
+                color: white;
+            }
+
+            .btn-primary:hover:not(:disabled) {
+                background: var(--primary-dark);
+            }
+
+            .btn-secondary {
+                background: #e5e7eb;
+                color: #111827;
+            }
+
+            .btn-danger {
+                background: var(--danger);
+                color: white;
+            }
+
+            .btn-success {
+                background: var(--success);
+                color: white;
+            }
+
+            .card {
+                background: var(--panel);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                padding: 12px;
+                margin-bottom: 12px;
+                box-sizing: border-box;
+            }
+
+            .card label {
+                display: block;
+                font-size: 12px;
+                font-weight: bold;
+                color: var(--muted);
+                margin-bottom: 6px;
+            }
+
+            .password-area {
+                display: flex;
+                gap: 8px;
+            }
+
+            .password-area input {
+                flex: 1;
+                min-width: 0;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 6px;
+                font-size: 14px;
+            }
+
+            #process-btn {
+                white-space: nowrap;
+            }
+
+            .settings-grid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 10px;
+            }
+
+            .setting-item select,
+            .setting-item input[type="range"] {
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .setting-item select {
+                padding: 9px;
+                border: 1px solid #ccc;
+                border-radius: 6px;
+                background: white;
+            }
+
+            .checkline {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                min-height: 38px;
+                font-size: 13px;
+                color: var(--text);
+            }
+
+            .hint-card {
+                display: none;
+                font-size: 13px;
+                line-height: 1.6;
+                color: var(--muted);
+            }
+
+            .hint-card strong {
+                color: var(--text);
+            }
+
+            .stats-grid {
+                display: grid;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 8px;
+                font-size: 12px;
+            }
+
+            .stat {
+                background: #f9fafb;
+                border: 1px solid #e5e7eb;
+                border-radius: 8px;
+                padding: 8px;
+            }
+
+            .stat .k {
+                color: var(--muted);
+                display: block;
+                margin-bottom: 2px;
+            }
+
+            .stat .v {
+                font-weight: bold;
+                font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            }
+
+            #progress-container {
+                width: 100%;
+                background: #e9ecef;
+                border-radius: 6px;
+                margin-bottom: 15px;
+                overflow: hidden;
+                height: 24px;
+            }
+
+            #progress-bar {
+                width: 0%;
+                height: 100%;
+                background: var(--success);
+                text-align: center;
+                line-height: 24px;
+                color: white;
+                transition: width 0.1s linear;
+                font-size: 12px;
+                font-weight: bold;
+            }
+
+            .chunk-columns {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+                margin-bottom: 15px;
+            }
+
+            .chunk-panel {
+                background: #fff;
+                border: 1px solid #dee2e6;
+                border-radius: 8px;
+                overflow: hidden;
+                min-height: 150px;
+            }
+
+            .chunk-panel h4 {
+                margin: 0;
+                padding: 9px 10px;
+                font-size: 13px;
+                border-bottom: 1px solid #e5e7eb;
+                background: #f9fafb;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .chunk-panel h4 span {
+                font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+                color: var(--muted);
+                font-size: 12px;
+            }
+
+            .chunk-scroll {
+                height: 150px;
+                overflow-y: auto;
+                padding: 10px;
+            }
+
+            .chunk-grid {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 5px;
+                align-content: flex-start;
+            }
+
+            .chunk-pill {
+                min-width: 34px;
+                padding: 4px 6px;
+                border-radius: 999px;
+                font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+                font-size: 11px;
+                text-align: center;
+                border: 1px solid #e5e7eb;
+                background: #f9fafb;
+                color: #6b7280;
+            }
+
+            .chunk-ok {
+                background: rgba(40, 167, 69, 0.10);
+                border-color: rgba(40, 167, 69, 0.35);
+                color: var(--success);
+                font-weight: bold;
+            }
+
+            .chunk-missing {
+                background: rgba(245, 158, 11, 0.10);
+                border-color: rgba(245, 158, 11, 0.35);
+                color: #92400e;
+            }
+
+            .chunk-current {
+                background: rgba(0, 123, 255, 0.12);
+                border-color: rgba(0, 123, 255, 0.45);
+                color: var(--primary);
+                font-weight: bold;
+                box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.12);
+            }
+
+            .empty-chunks {
+                color: var(--muted);
+                font-size: 12px;
+                text-align: center;
+                padding: 20px 0;
+            }
+
+            #download-btn {
+                display: none;
+                width: 100%;
+                text-align: center;
+                background: var(--primary);
+                color: white;
+                text-decoration: none;
+                padding: 12px 0;
+                font-weight: bold;
+                border-radius: 6px;
+                margin-bottom: 15px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            #preview-title,
+            #preview-note {
+                display: none;
+                margin: 0 0 8px;
+            }
+
+            #preview-title {
+                font-size: 14px;
+                font-weight: bold;
+            }
+
+            #preview-note {
+                font-size: 12px;
+                color: var(--muted);
+                line-height: 1.5;
+            }
+
+            .preview-box {
+                display: none;
+                width: 100%;
+                border: 1px solid #ccc;
+                border-radius: 6px;
+                background: #fff;
+                box-sizing: border-box;
+                margin-bottom: 30px;
+            }
+
+            #preview-img {
+                max-width: 100%;
+                height: auto;
+                max-height: 70vh;
+                object-fit: contain;
+                border-radius: 6px;
+            }
+
+            #preview-frame {
+                width: 100%;
+                height: min(70vh, 680px);
+                border: none;
+                border-radius: 6px;
+            }
+
+            #preview-text {
+                width: 100%;
+                height: 300px;
+                padding: 10px;
+                border: none;
+                resize: vertical;
+                font-family: monospace;
+                font-size: 13px;
+                box-sizing: border-box;
+            }
+
+            @media (max-width: 520px) {
+
+                .button-row,
+                .settings-grid,
+                .chunk-columns {
+                    grid-template-columns: 1fr;
+                }
+
+                .password-area {
+                    flex-direction: column;
+                }
+
+                .stats-grid {
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="canvas-container">
+            <video id="video" autoplay muted playsinline></video>
+            <canvas id="camera-canvas"></canvas>
+            <div id="camera-placeholder">
+                <div class="large">📷</div>
+                <div><strong>カメラは停止中です</strong></div>
+                <div class="small">「スキャン開始」を押すまでカメラは起動しません。</div>
+            </div>
+        </div>
+
+        <div class="ui-container">
+            <div class="header-area">
+                <div id="status-msg">
+                    スキャン待機中
+                    <span id="sub-status">準備ができたらスキャンを開始してください。</span>
+                </div>
+            </div>
+
+            <div class="button-row">
+                <button id="start-btn" class="btn-primary" onclick="startNewScan()">スキャン開始</button>
+                <button id="stop-btn" class="btn-secondary" onclick="stopCamera()" disabled>カメラ停止</button>
+                <button id="reset-btn" class="btn-danger" onclick="resetData()">リセット</button>
+                <button id="clear-result-btn" class="btn-secondary" onclick="clearResultOnly()" disabled>結果をクリア</button>
+            </div>
+
+            <div class="card">
+                <label for="password-input">復号パスワード</label>
+                <div class="password-area">
+                    <input type="password" id="password-input" placeholder="暗号化なしの場合は空欄。受信後でも入力できます。"
+                        autocomplete="current-password">
+                    <button id="process-btn" class="btn-success" onclick="retryProcessCompletedBuffer()"
+                        disabled>展開する</button>
+                </div>
+            </div>
+
+            <div>
+                <a id="download-btn" href="#">ファイルを保存する</a>
+                <div id="preview-title">プレビュー</div>
+                <div id="preview-note"></div>
+                <img id="preview-img" class="preview-box" />
+                <iframe id="preview-frame" class="preview-box" sandbox="allow-scripts allow-same-origin"></iframe>
+                <textarea id="preview-text" class="preview-box" readonly></textarea>
+            </div>
+
+            <div id="progress-container">
+                <div id="progress-bar">0%</div>
+            </div>
+            <div class="chunk-columns">
+                <div class="chunk-panel">
+                    <h4>受信済みチャンク <span id="received-count-label">0</span></h4>
+                    <div class="chunk-scroll">
+                        <div id="received-chunk-grid" class="chunk-grid">
+                            <div class="empty-chunks">まだありません</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chunk-panel">
+                    <h4>未受信チャンク <span id="missing-count-label">0</span></h4>
+                    <div class="chunk-scroll">
+                        <div id="missing-chunk-grid" class="chunk-grid">
+                            <div class="empty-chunks">スキャン待機中</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <label>読み取り性能設定</label>
+                <div class="settings-grid">
+                    <div class="setting-item">
+                        <label for="scan-fps-select">解析FPS上限</label>
+                        <select id="scan-fps-select">
+                            <option value="15">15 fps 安定</option>
+                            <option value="30">30 fps 高速</option>
+                            <option value="60" selected>60 fps 最大</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <label for="scan-size-select">解析解像度</label>
+                        <select id="scan-size-select">
+                            <option value="320">320 軽量</option>
+                            <option value="480" selected>480 標準</option>
+                            <option value="560">560 高密度</option>
+                            <option value="720">720 最高密度</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <label for="camera-quality-select">カメラ要求</label>
+                        <select id="camera-quality-select">
+                            <option value="720">1280x720 / 60fps</option>
+                            <option value="1080" selected>1920x1080 / 60fps</option>
+                            <option value="auto">ブラウザ任せ</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <label for="worker-count-select">並列Worker数</label>
+                        <select id="worker-count-select">
+                            <option value="2">2 省電力</option>
+                            <option value="4">4</option>
+                            <option value="8">8</option>
+                            <option value="16" selected>16 高速</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <label for="queue-size-select">映像キュー上限</label>
+                        <select id="queue-size-select">
+                            <option value="2">2 軽量</option>
+                            <option value="4">4 推奨</option>
+                            <option value="8" selected>8 最大</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <label for="zoom-select">ズーム</label>
+                        <select id="zoom-select" disabled>
+                            <option value="1">1.0x</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <label>追加機能</label>
+                        <div class="checkline">
+                            <input type="checkbox" id="roi-check" checked>
+                            <span>ROI追跡を使う</span>
+                        </div>
+                        <div class="checkline">
+                            <input type="checkbox" id="torch-check" disabled>
+                            <span>トーチ</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="hint-card" class="card hint-card"></div>
+
+            <div class="card">
+                <label>解析統計</label>
+                <div class="stats-grid">
+                    <div class="stat"><span class="k">実カメラ</span><span class="v" id="stat-camera">-</span></div>
+                    <div class="stat"><span class="k">decode/s</span><span class="v" id="stat-decodes">0</span></div>
+                    <div class="stat"><span class="k">new chunk/s</span><span class="v" id="stat-newchunks">0</span>
+                    </div>
+                    <div class="stat"><span class="k">queue | busy</span><span class="v" id="stat-queue">0/0 |
+                            0/0</span></div>
+                    <div class="stat"><span class="k">ROI</span><span class="v" id="stat-roi">OFF</span></div>
+                    <div class="stat"><span class="k">重複 / 失敗</span><span class="v" id="stat-dup-fail">0 / 0</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <script>
+            const video = document.getElementById('video');
+            const cvs = document.getElementById('camera-canvas');
+            const ctx = cvs.getContext('2d', { willReadFrequently: true });
+            const statusMsg = document.getElementById('status-msg');
+            const subStatus = document.getElementById('sub-status');
+            const progressBar = document.getElementById('progress-bar');
+            const receivedChunkGrid = document.getElementById('received-chunk-grid');
+            const missingChunkGrid = document.getElementById('missing-chunk-grid');
+            const receivedCountLabel = document.getElementById('received-count-label');
+            const missingCountLabel = document.getElementById('missing-count-label');
+            const downloadBtn = document.getElementById('download-btn');
+            const passwordInput = document.getElementById('password-input');
+            const startBtn = document.getElementById('start-btn');
+            const stopBtn = document.getElementById('stop-btn');
+            const processBtn = document.getElementById('process-btn');
+            const clearResultBtn = document.getElementById('clear-result-btn');
+            const cameraPlaceholder = document.getElementById('camera-placeholder');
+            const hintCard = document.getElementById('hint-card');
+            const scanFpsSelect = document.getElementById('scan-fps-select');
+            const scanSizeSelect = document.getElementById('scan-size-select');
+            const cameraQualitySelect = document.getElementById('camera-quality-select');
+            const workerCountSelect = document.getElementById('worker-count-select');
+            const queueSizeSelect = document.getElementById('queue-size-select');
+            const roiCheck = document.getElementById('roi-check');
+            const torchCheck = document.getElementById('torch-check');
+            const zoomSelect = document.getElementById('zoom-select');
+            const statCamera = document.getElementById('stat-camera');
+            const statDecodes = document.getElementById('stat-decodes');
+            const statNewChunks = document.getElementById('stat-newchunks');
+            const statQueue = document.getElementById('stat-queue');
+            const statRoi = document.getElementById('stat-roi');
+            const statDupFail = document.getElementById('stat-dup-fail');
+
+            const previewTitle = document.getElementById('preview-title');
+            const previewNote = document.getElementById('preview-note');
+            const previewImg = document.getElementById('preview-img');
+            const previewFrame = document.getElementById('preview-frame');
+            const previewText = document.getElementById('preview-text');
+
+            const DISPLAY_SIZE = 420;
+            cvs.width = DISPLAY_SIZE;
+            cvs.height = DISPLAY_SIZE;
+            ctx.imageSmoothingEnabled = false;
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, cvs.width, cvs.height);
+
+            const scanCanvas = document.createElement('canvas');
+            const scanCtx = scanCanvas.getContext('2d', { willReadFrequently: true });
+            scanCtx.imageSmoothingEnabled = false;
+
+            let videoWidth = 1920, videoHeight = 1080;
+            let sourceSize = 0, sx = 0, sy = 0;
+            let receivedChunks = {}, totalChunks = 0;
+            let receiveMode = 'legacy';
+            let fecState = null;
+            let localStream = null, isScanning = false;
+            let currentQRLocation = null;
+            let lastGoodLocation = null;
+            let consecutiveMisses = 0;
+            let completedBuffer = null;
+            let currentBlobUrl = null;
+            let processing = false;
+            let lastReceivedIdx = null;
+            let drawRafId = null;
+            let captureTimerId = null;
+            let statsTimerId = null;
+            let frameCallbackActive = false;
+            let lastCaptureAt = 0;
+            let frameSeq = 0;
+            const decodeQueue = [];
+            let workers = [];
+            let nextWorkerId = 0;
+
+            const stats = {
+                decodedWindow: 0,
+                newChunkWindow: 0,
+                queuedWindow: 0,
+                dispatchedWindow: 0,
+                duplicateChunks: 0,
+                failedDecodes: 0,
+                totalDecodes: 0,
+                totalCaptures: 0,
+                droppedFrames: 0,
+                staleDropped: 0,
+                avgDecodeMs: 0,
+                queuePeakWindow: 0,
+                busyPeakWindow: 0
+            };
+
+            const jsQRPath = new URL('./jsQR.js', window.location.href).href;
+            const workerCode = `
+            importScripts('${jsQRPath}');
+            self.onmessage = function(e) {
+                const started = performance.now();
+                const { id, buffer, width, height, roiX, roiY, type } = e.data;
+                const imgData = new Uint8ClampedArray(buffer);
+                const code = jsQR(imgData, width, height, { inversionAttempts: 'dontInvert' });
+                const elapsed = performance.now() - started;
+                if (code && code.binaryData) {
+                    const bin = new Uint8Array(code.binaryData);
+                    self.postMessage({ id, status: 'success', binaryData: bin, location: code.location, roiX, roiY, type, elapsed }, [bin.buffer]);
+                } else {
+                    self.postMessage({ id, status: 'fail', roiX, roiY, type, elapsed });
+                }
+            };
+        `;
+            const workerBlobUrl = URL.createObjectURL(new Blob([workerCode], { type: 'text/javascript' }));
+
+            function getScanSize() { return parseInt(scanSizeSelect.value, 10); }
+            function getTargetInterval() { return 1000 / parseInt(scanFpsSelect.value, 10); }
+            function getMaxQueue() { return parseInt(queueSizeSelect.value, 10); }
+
+            function setStatus(mainText, subText = '', kind = 'normal') {
+                const colors = { normal: '#1f2937', active: '#007bff', success: '#28a745', warning: '#f59e0b', danger: '#dc3545' };
+                statusMsg.childNodes[0].nodeValue = mainText;
+                subStatus.textContent = subText;
+                statusMsg.style.color = colors[kind] || colors.normal;
+            }
+
+            function setHint(html) {
+                if (!html) {
+                    hintCard.style.display = 'none';
+                    hintCard.innerHTML = '';
+                    return;
+                }
+                hintCard.innerHTML = html;
+                hintCard.style.display = 'block';
+            }
+
+            function updateButtons() {
+                startBtn.disabled = isScanning;
+                stopBtn.disabled = !isScanning;
+                processBtn.disabled = !completedBuffer || processing;
+                clearResultBtn.disabled = !completedBuffer && !currentBlobUrl;
+                cameraPlaceholder.style.display = isScanning ? 'none' : 'flex';
+            }
+
+            function clearPreviewAndDownload() {
+                if (currentBlobUrl) {
+                    URL.revokeObjectURL(currentBlobUrl);
+                    currentBlobUrl = null;
+                }
+                if (previewImg.dataset.previewUrl) {
+                    URL.revokeObjectURL(previewImg.dataset.previewUrl);
+                    delete previewImg.dataset.previewUrl;
+                }
+                downloadBtn.removeAttribute('href');
+                downloadBtn.removeAttribute('download');
+                downloadBtn.style.display = 'none';
+                previewTitle.style.display = 'none';
+                previewNote.style.display = 'none';
+                previewNote.textContent = '';
+                previewImg.removeAttribute('src');
+                previewFrame.removeAttribute('srcdoc');
+                previewFrame.removeAttribute('src');
+                previewText.value = '';
+                previewImg.style.display = 'none';
+                previewFrame.style.display = 'none';
+                previewText.style.display = 'none';
+            }
+
+            function resetReceiveState() {
+                receivedChunks = {};
+                totalChunks = 0;
+                receiveMode = 'legacy';
+                fecState = null;
+                currentQRLocation = null;
+                lastGoodLocation = null;
+                consecutiveMisses = 0;
+                completedBuffer = null;
+                lastReceivedIdx = null;
+                processing = false;
+                decodeQueue.length = 0;
+                progressBar.style.width = '0%';
+                progressBar.textContent = '0%';
+                renderChunkColumns();
+                clearPreviewAndDownload();
+                setHint('');
+                resetStats();
+                updateButtons();
+            }
+
+            function resetStats() {
+                stats.decodedWindow = 0;
+                stats.newChunkWindow = 0;
+                stats.queuedWindow = 0;
+                stats.dispatchedWindow = 0;
+                stats.duplicateChunks = 0;
+                stats.failedDecodes = 0;
+                stats.totalDecodes = 0;
+                stats.totalCaptures = 0;
+                stats.droppedFrames = 0;
+                stats.staleDropped = 0;
+                stats.avgDecodeMs = 0;
+                stats.queuePeakWindow = 0;
+                stats.busyPeakWindow = 0;
+                updateStatsDisplay();
+            }
+
+            function getBusyWorkerCount() {
+                return workers.filter(w => w.busy).length;
+            }
+
+            function markSchedulerActivity() {
+                const busy = getBusyWorkerCount();
+                stats.queuePeakWindow = Math.max(stats.queuePeakWindow, decodeQueue.length);
+                stats.busyPeakWindow = Math.max(stats.busyPeakWindow, busy);
+            }
+
+            function updateSchedulerStatNow() {
+                const busy = getBusyWorkerCount();
+                markSchedulerActivity();
+                statQueue.textContent = `q ${decodeQueue.length}/${stats.queuePeakWindow}/${getMaxQueue()} | w ${busy}/${stats.busyPeakWindow}/${workers.length}`;
+            }
+
+            function updateStatsDisplay() {
+                updateSchedulerStatNow();
+                statDecodes.textContent = `${stats.decodedWindow}/s (${stats.avgDecodeMs.toFixed(0)}ms)`;
+                statNewChunks.textContent = `${stats.newChunkWindow}/s`;
+                statRoi.textContent = lastGoodLocation && roiCheck.checked ? `ON miss:${consecutiveMisses}` : 'OFF';
+                statDupFail.textContent = `${stats.duplicateChunks} / ${stats.failedDecodes}`;
+                stats.decodedWindow = 0;
+                stats.newChunkWindow = 0;
+                stats.queuedWindow = 0;
+                stats.dispatchedWindow = 0;
+                stats.queuePeakWindow = decodeQueue.length;
+                stats.busyPeakWindow = getBusyWorkerCount();
+            }
+
+            async function startNewScan() {
+                resetReceiveState();
+                setStatus('カメラ起動中...', 'iPhone側でカメラ許可を求められたら許可してください。', 'active');
+                await startCamera();
+            }
+
+            function buildVideoConstraints() {
+                const quality = cameraQualitySelect.value;
+                if (quality === 'auto') {
+                    return { facingMode: { ideal: 'environment' }, frameRate: { ideal: 60, min: 30 } };
+                }
+                if (quality === '1080') {
+                    return { facingMode: { ideal: 'environment' }, width: { ideal: 1920 }, height: { ideal: 1080 }, frameRate: { ideal: 60, min: 30 }, aspectRatio: { ideal: 1.7777778 } };
+                }
+                return { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 }, frameRate: { ideal: 60, min: 30 }, aspectRatio: { ideal: 1.7777778 } };
+            }
+
+            const startCamera = async () => {
+                if (localStream) stopCamera();
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: buildVideoConstraints() });
+                    localStream = stream;
+                    video.srcObject = stream;
+                    video.onloadedmetadata = async () => {
+                        await video.play();
+                        videoWidth = video.videoWidth;
+                        videoHeight = video.videoHeight;
+                        sourceSize = Math.floor(Math.min(videoWidth, videoHeight) * 0.66);
+                        sx = Math.floor((videoWidth - sourceSize) / 2);
+                        sy = Math.floor((videoHeight - sourceSize) / 2);
+                        configureScanCanvas();
+                        await setupCameraControls();
+                        setupWorkers();
+                        isScanning = true;
+                        setStatus('スキャン中', 'QRコードを枠内に合わせてください。解析は複数Workerと短いフレームキューで並行処理します。', 'active');
+                        updateButtons();
+                        startLoops();
+                    };
+                } catch (e) {
+                    setStatus(`カメラエラー: ${e.name}`, '権限・HTTPS・ブラウザ設定を確認してください。', 'danger');
+                    isScanning = false;
+                    updateButtons();
+                }
+            };
+
+            function configureScanCanvas() {
+                const size = getScanSize();
+                scanCanvas.width = size;
+                scanCanvas.height = size;
+                scanCtx.imageSmoothingEnabled = false;
+            }
+
+            async function setupCameraControls() {
+                const track = localStream?.getVideoTracks?.()[0];
+                if (!track) return;
+                const settings = track.getSettings?.() || {};
+                statCamera.textContent = `${settings.width || videoWidth}x${settings.height || videoHeight}@${settings.frameRate || '?'}fps`;
+                const caps = track.getCapabilities?.() || {};
+
+                zoomSelect.innerHTML = '<option value="1">1.0x</option>';
+                zoomSelect.disabled = true;
+                if (caps.zoom && Number.isFinite(caps.zoom.min) && Number.isFinite(caps.zoom.max)) {
+                    const choices = [1, 1.25, 1.5, 2, 2.5, 3].filter(v => v >= caps.zoom.min && v <= caps.zoom.max);
+                    zoomSelect.innerHTML = choices.map(v => `<option value="${v}">${v.toFixed(2).replace(/\.00$/, '')}x</option>`).join('');
+                    zoomSelect.disabled = choices.length === 0;
+                }
+
+                torchCheck.disabled = !caps.torch;
+                torchCheck.checked = false;
+            }
+
+            async function applyCameraAdvanced() {
+                const track = localStream?.getVideoTracks?.()[0];
+                if (!track || !track.applyConstraints) return;
+                const advanced = [];
+                if (!zoomSelect.disabled) advanced.push({ zoom: parseFloat(zoomSelect.value) });
+                if (!torchCheck.disabled) advanced.push({ torch: torchCheck.checked });
+                if (!advanced.length) return;
+                try {
+                    await track.applyConstraints({ advanced });
+                    const settings = track.getSettings?.() || {};
+                    statCamera.textContent = `${settings.width || videoWidth}x${settings.height || videoHeight}@${settings.frameRate || '?'}fps`;
+                } catch (e) {
+                    console.warn('applyConstraints failed', e);
+                }
+            }
+
+            function setupWorkers() {
+                terminateWorkers();
+                const count = parseInt(workerCountSelect.value, 10);
+                workers = Array.from({ length: count }, () => {
+                    const worker = new Worker(workerBlobUrl);
+                    const item = { id: nextWorkerId++, worker, busy: false };
+                    worker.onmessage = (event) => handleWorkerMessage(item, event.data);
+                    worker.onerror = (error) => {
+                        console.error('QR worker error', error);
+                        item.busy = false;
+                        dispatchDecodeJobs();
+                    };
+                    return item;
+                });
+            }
+
+            function terminateWorkers() {
+                for (const item of workers) item.worker.terminate();
+                workers = [];
+            }
+
+            function startLoops() {
+                stopLoops();
+                drawLoop();
+                statsTimerId = setInterval(updateStatsDisplay, 1000);
+                if ('requestVideoFrameCallback' in HTMLVideoElement.prototype) {
+                    frameCallbackActive = true;
+                    video.requestVideoFrameCallback(onVideoFrame);
+                } else {
+                    captureTimerId = setInterval(captureMaybe, 4);
+                }
+            }
+
+            function stopLoops() {
+                frameCallbackActive = false;
+                if (drawRafId) cancelAnimationFrame(drawRafId);
+                drawRafId = null;
+                if (captureTimerId) clearInterval(captureTimerId);
+                captureTimerId = null;
+                if (statsTimerId) clearInterval(statsTimerId);
+                statsTimerId = null;
+            }
+
+            function onVideoFrame() {
+                if (!isScanning || !frameCallbackActive) return;
+                captureMaybe();
+                video.requestVideoFrameCallback(onVideoFrame);
+            }
+
+            const stopCamera = () => {
+                isScanning = false;
+                stopLoops();
+                decodeQueue.length = 0;
+                currentQRLocation = null;
+                terminateWorkers();
+                if (localStream) {
+                    localStream.getTracks().forEach(t => t.stop());
+                    localStream = null;
+                }
+                video.srcObject = null;
+                ctx.fillStyle = '#000';
+                ctx.fillRect(0, 0, cvs.width, cvs.height);
+                if (!completedBuffer) setStatus('スキャン停止中', '再開する場合は「スキャン開始」を押してください。', 'normal');
+                updateButtons();
+            };
+
+            const drawLoop = () => {
+                if (!isScanning) return;
+                if (video.readyState >= video.HAVE_CURRENT_DATA) {
+                    ctx.drawImage(video, sx, sy, sourceSize, sourceSize, 0, 0, DISPLAY_SIZE, DISPLAY_SIZE);
+                    if (currentQRLocation) drawLocation(currentQRLocation);
+                }
+                drawRafId = requestAnimationFrame(drawLoop);
+            };
+
+            function drawLocation(location) {
+                const scale = DISPLAY_SIZE / getScanSize();
+                ctx.lineWidth = 4;
+                ctx.strokeStyle = '#00FF00';
+                ctx.beginPath();
+                ctx.moveTo(location.topLeftCorner.x * scale, location.topLeftCorner.y * scale);
+                ctx.lineTo(location.topRightCorner.x * scale, location.topRightCorner.y * scale);
+                ctx.lineTo(location.bottomRightCorner.x * scale, location.bottomRightCorner.y * scale);
+                ctx.lineTo(location.bottomLeftCorner.x * scale, location.bottomLeftCorner.y * scale);
+                ctx.closePath();
+                ctx.stroke();
+            }
+
+            function captureMaybe() {
+                if (!isScanning || video.readyState < video.HAVE_CURRENT_DATA) return;
+                const now = performance.now();
+                const interval = getTargetInterval();
+                if (now - lastCaptureAt < interval) return;
+                lastCaptureAt = now;
+                captureFrameForDecode(now);
+            }
+
+            function getRoiRect(size) {
+                if (!roiCheck.checked || !lastGoodLocation || consecutiveMisses > 4) {
+                    return { x: 0, y: 0, w: size, h: size, active: false };
+                }
+                const pts = [
+                    lastGoodLocation.topLeftCorner,
+                    lastGoodLocation.topRightCorner,
+                    lastGoodLocation.bottomRightCorner,
+                    lastGoodLocation.bottomLeftCorner
+                ];
+                const xs = pts.map(p => p.x), ys = pts.map(p => p.y);
+                let minX = Math.min(...xs), maxX = Math.max(...xs);
+                let minY = Math.min(...ys), maxY = Math.max(...ys);
+                const side = Math.max(maxX - minX, maxY - minY);
+                const margin = Math.max(48, side * 0.45);
+                minX = Math.max(0, Math.floor(minX - margin));
+                minY = Math.max(0, Math.floor(minY - margin));
+                maxX = Math.min(size, Math.ceil(maxX + margin));
+                maxY = Math.min(size, Math.ceil(maxY + margin));
+                let w = maxX - minX;
+                let h = maxY - minY;
+                const minSide = Math.min(size, Math.max(180, Math.ceil(side + margin)));
+                if (w < minSide) {
+                    const add = minSide - w;
+                    minX = Math.max(0, minX - Math.floor(add / 2));
+                    maxX = Math.min(size, minX + minSide);
+                    minX = Math.max(0, maxX - minSide);
+                }
+                if (h < minSide) {
+                    const add = minSide - h;
+                    minY = Math.max(0, minY - Math.floor(add / 2));
+                    maxY = Math.min(size, minY + minSide);
+                    minY = Math.max(0, maxY - minSide);
+                }
+                return { x: minX, y: minY, w: maxX - minX, h: maxY - minY, active: true };
+            }
+
+            function enqueueDecodeJobFromRect(type, rect, captureTime) {
+                const imageData = scanCtx.getImageData(rect.x, rect.y, rect.w, rect.h);
+                const job = {
+                    id: ++frameSeq,
+                    type,
+                    buffer: imageData.data.buffer,
+                    width: rect.w,
+                    height: rect.h,
+                    roiX: rect.x,
+                    roiY: rect.y,
+                    captureTime
+                };
+                const maxQueue = getMaxQueue();
+                if (decodeQueue.length >= maxQueue) {
+                    decodeQueue.splice(0, decodeQueue.length - maxQueue + 1);
+                    stats.droppedFrames++;
+                }
+                decodeQueue.push(job);
+                stats.queuedWindow++;
+                stats.queuePeakWindow = Math.max(stats.queuePeakWindow, decodeQueue.length);
+            }
+
+            function captureFrameForDecode(captureTime) {
+                const size = getScanSize();
+                if (scanCanvas.width !== size || scanCanvas.height !== size) configureScanCanvas();
+                scanCtx.drawImage(video, sx, sy, sourceSize, sourceSize, 0, 0, size, size);
+
+                const roi = getRoiRect(size);
+                const hasRoi = roi.active;
+                const fullRect = { x: 0, y: 0, w: size, h: size };
+                const busy = getBusyWorkerCount();
+                const idleWorkers = Math.max(0, workers.length - busy);
+                const queueRoom = getMaxQueue() - decodeQueue.length;
+
+                if (hasRoi) {
+                    enqueueDecodeJobFromRect('roi', roi, captureTime);
+                    // ROIだけに寄せすぎると一度外れた時に復帰が遅いので、余力がある時は全体探索も混ぜる。
+                    if ((frameSeq % 3 === 0 || consecutiveMisses >= 2 || idleWorkers >= 2) && queueRoom > 1) {
+                        enqueueDecodeJobFromRect('full-safety', fullRect, captureTime);
+                    }
+                } else {
+                    enqueueDecodeJobFromRect('full', fullRect, captureTime);
+                }
+
+                stats.totalCaptures++;
+                dispatchDecodeJobs();
+                updateSchedulerStatNow();
+            }
+
+            function dispatchDecodeJobs() {
+                const maxJobAgeMs = 260;
+                const now = performance.now();
+                while (decodeQueue.length && now - decodeQueue[0].captureTime > maxJobAgeMs) {
+                    decodeQueue.shift();
+                    stats.staleDropped++;
+                }
+                for (const item of workers) {
+                    if (item.busy || decodeQueue.length === 0) continue;
+                    const job = decodeQueue.shift();
+                    item.busy = true;
+                    stats.dispatchedWindow++;
+                    markSchedulerActivity();
+                    item.worker.postMessage({
+                        id: job.id,
+                        type: job.type,
+                        buffer: job.buffer,
+                        width: job.width,
+                        height: job.height,
+                        roiX: job.roiX,
+                        roiY: job.roiY
+                    }, [job.buffer]);
+                }
+                updateSchedulerStatNow();
+            }
+
+            function handleWorkerMessage(item, data) {
+                item.busy = false;
+                if (!isScanning) return;
+                stats.totalDecodes++;
+                stats.avgDecodeMs = stats.avgDecodeMs ? stats.avgDecodeMs * 0.85 + data.elapsed * 0.15 : data.elapsed;
+                if (data.status === 'success') {
+                    stats.decodedWindow++;
+                    consecutiveMisses = 0;
+                    currentQRLocation = offsetLocation(data.location, data.roiX, data.roiY);
+                    lastGoodLocation = currentQRLocation;
+                    parseBinaryChunk(data.binaryData);
+                } else {
+                    stats.failedDecodes++;
+                    // 並列の補助ジョブ失敗でROI状態を壊さない。主ジョブだけをミス判定に使う。
+                    if (data.type === 'roi' || data.type === 'full') {
+                        consecutiveMisses++;
+                        if (consecutiveMisses > 6) currentQRLocation = null;
+                    }
+                }
+                dispatchDecodeJobs();
+                updateSchedulerStatNow();
+            }
+
+            function offsetLocation(location, ox, oy) {
+                const add = p => ({ x: p.x + ox, y: p.y + oy });
+                return {
+                    topLeftCorner: add(location.topLeftCorner),
+                    topRightCorner: add(location.topRightCorner),
+                    bottomRightCorner: add(location.bottomRightCorner),
+                    bottomLeftCorner: add(location.bottomLeftCorner),
+                    topLeftFinderPattern: location.topLeftFinderPattern ? add(location.topLeftFinderPattern) : undefined,
+                    topRightFinderPattern: location.topRightFinderPattern ? add(location.topRightFinderPattern) : undefined,
+                    bottomLeftFinderPattern: location.bottomLeftFinderPattern ? add(location.bottomLeftFinderPattern) : undefined,
+                    bottomRightAlignmentPattern: location.bottomRightAlignmentPattern ? add(location.bottomRightAlignmentPattern) : undefined
+                };
+            }
+
+            const FEC_HEADER_SIZE = 22;
+            const GF_EXP = new Uint8Array(512);
+            const GF_LOG = new Uint8Array(256);
+            (() => {
+                let x = 1;
+                for (let i = 0; i < 255; i++) {
+                    GF_EXP[i] = x;
+                    GF_LOG[x] = i;
+                    x <<= 1;
+                    if (x & 0x100) x ^= 0x11d;
+                }
+                for (let i = 255; i < 512; i++) GF_EXP[i] = GF_EXP[i - 255];
+            })();
+
+            function gfMul(a, b) {
+                if (a === 0 || b === 0) return 0;
+                return GF_EXP[GF_LOG[a] + GF_LOG[b]];
+            }
+
+            function gfInv(a) {
+                if (a === 0) throw new Error('FEC matrix is singular');
+                return GF_EXP[255 - GF_LOG[a]];
+            }
+
+            function fecCoeff(row, col, dataCount) {
+                return gfInv((dataCount + row) ^ col);
+            }
+
+            function xorScaled(dst, src, coef) {
+                if (coef === 0) return;
+                if (coef === 1) {
+                    for (let i = 0; i < src.length; i++) dst[i] ^= src[i];
+                } else {
+                    for (let i = 0; i < src.length; i++) {
+                        const b = src[i];
+                        if (b) dst[i] ^= gfMul(coef, b);
+                    }
+                }
+            }
+
+            function fecRowForShare(shareIndex, dataCount) {
+                const row = new Uint8Array(dataCount);
+                if (shareIndex < dataCount) {
+                    row[shareIndex] = 1;
+                    return row;
+                }
+                const parityIndex = shareIndex - dataCount;
+                for (let c = 0; c < dataCount; c++) row[c] = fecCoeff(parityIndex, c, dataCount);
+                return row;
+            }
+
+            function invertMatrix(matrix) {
+                const n = matrix.length;
+                const a = matrix.map(row => Array.from(row));
+                const inv = Array.from({ length: n }, (_, r) => Array.from({ length: n }, (_, c) => r === c ? 1 : 0));
+                for (let col = 0; col < n; col++) {
+                    let pivot = col;
+                    while (pivot < n && a[pivot][col] === 0) pivot++;
+                    if (pivot === n) throw new Error('FEC matrix is singular');
+                    if (pivot !== col) {
+                        [a[col], a[pivot]] = [a[pivot], a[col]];
+                        [inv[col], inv[pivot]] = [inv[pivot], inv[col]];
+                    }
+                    const scale = gfInv(a[col][col]);
+                    for (let c = 0; c < n; c++) {
+                        a[col][c] = gfMul(a[col][c], scale);
+                        inv[col][c] = gfMul(inv[col][c], scale);
+                    }
+                    for (let r = 0; r < n; r++) {
+                        if (r === col) continue;
+                        const factor = a[r][col];
+                        if (factor === 0) continue;
+                        for (let c = 0; c < n; c++) {
+                            a[r][c] ^= gfMul(factor, a[col][c]);
+                            inv[r][c] ^= gfMul(factor, inv[col][c]);
+                        }
+                    }
+                }
+                return inv;
+            }
+
+            function resetForLegacy(maxIdx) {
+                receiveMode = 'legacy';
+                fecState = null;
+                totalChunks = maxIdx;
+                receivedChunks = {};
+                completedBuffer = null;
+                clearPreviewAndDownload();
+                renderChunkColumns();
+            }
+
+            function resetForFec(meta, shareSize) {
+                receiveMode = 'fec';
+                receivedChunks = {};
+                totalChunks = Math.ceil(meta.originalLen / shareSize);
+                fecState = {
+                    totalFrames: meta.totalFrames,
+                    groupCount: meta.groupCount,
+                    originalLen: meta.originalLen,
+                    shareSize,
+                    groups: {},
+                    directChunks: {},
+                    decodedChunks: {},
+                    receivedFrameKeys: new Set(),
+                    receivedFrameCount: 0,
+                    lastFrameNo: null,
+                    lastGlobalIdx: null
+                };
+                completedBuffer = null;
+                clearPreviewAndDownload();
+                renderChunkColumns();
+            }
+
+            const parseBinaryChunk = (binData) => {
+                if (binData.length >= FEC_HEADER_SIZE && binData[0] === 0x51 && binData[1] === 0x41 && binData[2] === 2) {
+                    parseFecChunk(binData);
+                    return;
+                }
+                parseLegacyChunk(binData);
+            };
+
+            function parseLegacyChunk(binData) {
+                if (binData.length < 4) return;
+                const view = new DataView(binData.buffer, binData.byteOffset, binData.byteLength);
+                const currentIdx = view.getUint16(0, false);
+                const maxIdx = view.getUint16(2, false);
+                const payload = binData.slice(4);
+                if (currentIdx < 1 || maxIdx < 1 || currentIdx > maxIdx) return;
+
+                if (receiveMode !== 'legacy' || totalChunks !== maxIdx) resetForLegacy(maxIdx);
+                if (receivedChunks[currentIdx] !== undefined) {
+                    stats.duplicateChunks++;
+                    return;
+                }
+                receivedChunks[currentIdx] = payload;
+                lastReceivedIdx = currentIdx;
+                stats.newChunkWindow++;
+                updateProgress();
+            }
+
+            function parseFecChunk(binData) {
+                const view = new DataView(binData.buffer, binData.byteOffset, binData.byteLength);
+                const meta = {
+                    frameNo: view.getUint16(4, false),
+                    totalFrames: view.getUint16(6, false),
+                    groupIndex: view.getUint16(8, false),
+                    groupCount: view.getUint16(10, false),
+                    firstDataIndex: view.getUint16(12, false),
+                    dataCount: binData[14],
+                    parityCount: binData[15],
+                    shareIndex: binData[16],
+                    originalLen: view.getUint32(18, false)
+                };
+                const payload = binData.slice(FEC_HEADER_SIZE);
+                if (payload.length === 0 || meta.totalFrames < 1 || meta.groupCount < 1) return;
+                if (meta.dataCount < 1 || meta.shareIndex >= meta.dataCount + meta.parityCount) return;
+                if (meta.groupIndex >= meta.groupCount) return;
+
+                if (
+                    receiveMode !== 'fec' ||
+                    !fecState ||
+                    fecState.totalFrames !== meta.totalFrames ||
+                    fecState.groupCount !== meta.groupCount ||
+                    fecState.originalLen !== meta.originalLen ||
+                    fecState.shareSize !== payload.length
+                ) {
+                    resetForFec(meta, payload.length);
+                }
+
+                const frameKey = `${meta.groupIndex}:${meta.shareIndex}`;
+                if (fecState.receivedFrameKeys.has(frameKey)) {
+                    stats.duplicateChunks++;
+                    return;
+                }
+                fecState.receivedFrameKeys.add(frameKey);
+                fecState.receivedFrameCount++;
+                fecState.lastFrameNo = meta.frameNo;
+
+                let group = fecState.groups[meta.groupIndex];
+                if (!group) {
+                    group = {
+                        firstDataIndex: meta.firstDataIndex,
+                        dataCount: meta.dataCount,
+                        parityCount: meta.parityCount,
+                        shares: {},
+                        decoded: false
+                    };
+                    fecState.groups[meta.groupIndex] = group;
+                } else if (
+                    group.firstDataIndex !== meta.firstDataIndex ||
+                    group.dataCount !== meta.dataCount ||
+                    group.parityCount !== meta.parityCount
+                ) {
+                    return;
+                }
+
+                group.shares[meta.shareIndex] = payload;
+                if (meta.shareIndex < meta.dataCount) {
+                    const globalIdx = meta.firstDataIndex + meta.shareIndex + 1;
+                    fecState.directChunks[globalIdx] = payload;
+                    fecState.lastGlobalIdx = globalIdx;
+                    lastReceivedIdx = globalIdx;
+                } else {
+                    lastReceivedIdx = null;
+                }
+                stats.newChunkWindow++;
+                updateProgress();
+            }
+
+            function tryDecodeFecGroups() {
+                if (!fecState) return;
+                for (const group of Object.values(fecState.groups)) {
+                    if (group.decoded) continue;
+                    const shareIndices = Object.keys(group.shares).map(Number).sort((a, b) => a - b);
+                    if (shareIndices.length < group.dataCount) continue;
+                    const selected = shareIndices.slice(0, group.dataCount);
+                    const rows = selected.map(idx => fecRowForShare(idx, group.dataCount));
+                    let inverse;
+                    try {
+                        inverse = invertMatrix(rows);
+                    } catch (e) {
+                        continue;
+                    }
+                    const received = selected.map(idx => group.shares[idx]);
+                    for (let dataRow = 0; dataRow < group.dataCount; dataRow++) {
+                        const out = new Uint8Array(fecState.shareSize);
+                        for (let r = 0; r < group.dataCount; r++) xorScaled(out, received[r], inverse[dataRow][r]);
+                        const globalIdx = group.firstDataIndex + dataRow + 1;
+                        fecState.decodedChunks[globalIdx] = out;
+                    }
+                    group.decoded = true;
+                }
+            }
+
+            function getFecDataTotal() {
+                if (!fecState) return 0;
+                return Math.ceil(fecState.originalLen / fecState.shareSize);
+            }
+
+            function getFecChunk(idx) {
+                return fecState.decodedChunks[idx] || fecState.directChunks[idx];
+            }
+
+            function renderFecChunkColumns() {
+                const dataTotal = getFecDataTotal();
+                const received = [];
+                const missing = [];
+                for (let i = 1; i <= dataTotal; i++) {
+                    if (getFecChunk(i)) received.push(i);
+                    else missing.push(i);
+                }
+                receivedCountLabel.textContent = dataTotal ? `${received.length}/${dataTotal} data (${fecState.receivedFrameCount}/${fecState.totalFrames} QR)` : '0';
+                missingCountLabel.textContent = dataTotal ? `${missing.length}/${dataTotal}` : '0';
+                receivedChunkGrid.innerHTML = received.length
+                    ? received.map(i => `<span class="chunk-pill ${i === fecState.lastGlobalIdx ? 'chunk-current' : 'chunk-ok'}">${i}</span>`).join('')
+                    : `<div class="empty-chunks">${dataTotal ? 'まだありません' : 'まだありません'}</div>`;
+                missingChunkGrid.innerHTML = missing.length
+                    ? missing.map(i => `<span class="chunk-pill chunk-missing">${i}</span>`).join('')
+                    : `<div class="empty-chunks">${dataTotal ? 'すべて復元済み' : 'スキャン待機中'}</div>`;
+                if (fecState.lastGlobalIdx) receivedChunkGrid.parentElement.scrollTop = receivedChunkGrid.parentElement.scrollHeight;
+            }
+
+            function renderChunkColumns() {
+                if (receiveMode === 'fec' && fecState) {
+                    renderFecChunkColumns();
+                    return;
+                }
+                const received = [];
+                const missing = [];
+                for (let i = 1; i <= totalChunks; i++) {
+                    if (receivedChunks[i]) received.push(i);
+                    else missing.push(i);
+                }
+                receivedCountLabel.textContent = totalChunks ? `${received.length}/${totalChunks}` : '0';
+                missingCountLabel.textContent = totalChunks ? `${missing.length}/${totalChunks}` : '0';
+                receivedChunkGrid.innerHTML = received.length
+                    ? received.map(i => `<span class="chunk-pill ${i === lastReceivedIdx ? 'chunk-current' : 'chunk-ok'}">${i}</span>`).join('')
+                    : `<div class="empty-chunks">${totalChunks ? 'まだありません' : 'まだありません'}</div>`;
+                missingChunkGrid.innerHTML = missing.length
+                    ? missing.map(i => `<span class="chunk-pill chunk-missing">${i}</span>`).join('')
+                    : `<div class="empty-chunks">${totalChunks ? 'すべて受信済み' : 'スキャン待機中'}</div>`;
+                if (lastReceivedIdx && receivedChunks[lastReceivedIdx]) receivedChunkGrid.parentElement.scrollTop = receivedChunkGrid.parentElement.scrollHeight;
+            }
+
+            const updateProgress = async () => {
+                if (receiveMode === 'fec' && fecState) {
+                    await updateFecProgress();
+                    return;
+                }
+                const currentCount = Object.keys(receivedChunks).length;
+                const percent = totalChunks ? Math.floor((currentCount / totalChunks) * 100) : 0;
+                progressBar.style.width = `${percent}%`;
+                progressBar.textContent = `${percent}% (${currentCount}/${totalChunks})`;
+                renderChunkColumns();
+
+                if (currentCount === totalChunks) {
+                    const fullBuffer = combineChunks();
+                    completedBuffer = fullBuffer;
+                    stopCamera();
+                    setStatus('全データを受信しました', '結合済みです。展開を試行しています。失敗しても再試行できます。', 'success');
+                    setHint('<strong>受信データを保持しています。</strong> パスワードが違う、または未入力だった場合は、入力し直して「展開する」を押してください。');
+                    updateButtons();
+                    await retryProcessCompletedBuffer(true);
+                } else {
+                    setStatus('受信中', `残り ${totalChunks - currentCount} フレーム。最後に受信: ${lastReceivedIdx}`, 'active');
+                }
+            };
+
+            async function updateFecProgress() {
+                if (completedBuffer) return;
+                tryDecodeFecGroups();
+                const dataTotal = getFecDataTotal();
+                let currentCount = 0;
+                for (let i = 1; i <= dataTotal; i++) if (getFecChunk(i)) currentCount++;
+                const percent = dataTotal ? Math.floor((currentCount / dataTotal) * 100) : 0;
+                progressBar.style.width = `${percent}%`;
+                progressBar.textContent = `${percent}% (${currentCount}/${dataTotal} data)`;
+                renderChunkColumns();
+
+                if (dataTotal && currentCount === dataTotal) {
+                    const fullBuffer = combineFecChunks();
+                    completedBuffer = fullBuffer;
+                    stopCamera();
+                    setStatus('全データをFEC復元しました', `受信QR ${fecState.receivedFrameCount}/${fecState.totalFrames} 枚から結合済みです。`, 'success');
+                    setHint('<strong>FEC復元完了:</strong> 一部QRフレームを読み落としていても復元できています。パスワードが違う場合は入力し直して「展開する」を押してください。');
+                    updateButtons();
+                    await retryProcessCompletedBuffer(true);
+                } else {
+                    setStatus('受信中(FEC)', `復元可能データ残り ${dataTotal - currentCount} チャンク / 受信QR ${fecState.receivedFrameCount}/${fecState.totalFrames}`, 'active');
+                }
+            }
+
+            function combineChunks() {
+                let totalLen = 0;
+                for (let i = 1; i <= totalChunks; i++) totalLen += receivedChunks[i].length;
+                const fullBuffer = new Uint8Array(totalLen);
+                let offset = 0;
+                for (let i = 1; i <= totalChunks; i++) {
+                    fullBuffer.set(receivedChunks[i], offset);
+                    offset += receivedChunks[i].length;
+                }
+                return fullBuffer;
+            }
+
+            function combineFecChunks() {
+                const dataTotal = getFecDataTotal();
+                const paddedLen = dataTotal * fecState.shareSize;
+                const fullBuffer = new Uint8Array(paddedLen);
+                let offset = 0;
+                for (let i = 1; i <= dataTotal; i++) {
+                    const chunk = getFecChunk(i);
+                    if (!chunk) throw new Error('FEC data is still incomplete');
+                    fullBuffer.set(chunk, offset);
+                    offset += fecState.shareSize;
+                }
+                return fullBuffer.slice(0, fecState.originalLen);
+            }
+
+            async function decompressGzip(uint8Array) {
+                const ds = new DecompressionStream('gzip');
+                const writer = ds.writable.getWriter();
+                writer.write(uint8Array);
+                writer.close();
+                const reader = ds.readable.getReader();
+                const chunks = [];
+                let totalSize = 0;
+                while (true) {
+                    const { value, done } = await reader.read();
+                    if (done) break;
+                    chunks.push(value);
+                    totalSize += value.length;
+                }
+                const result = new Uint8Array(totalSize);
+                let offset = 0;
+                for (let chunk of chunks) {
+                    result.set(chunk, offset);
+                    offset += chunk.length;
+                }
+                return result;
+            }
+
+            async function retryProcessCompletedBuffer(isAuto = false) {
+                if (!completedBuffer || processing) return;
+                processing = true;
+                updateButtons();
+                clearPreviewAndDownload();
+                const passwordStr = passwordInput.value;
+                setStatus(isAuto ? '自動展開中...' : '展開中...', passwordStr ? '入力されたパスワードで復号・展開しています。' : 'パスワードなしで gzip 展開を試みています。', 'active');
+                try {
+                    await processAndDownload(completedBuffer, passwordStr);
+                    setStatus('🎉 展開完了', 'ファイルを表示しました。必要に応じて保存してください。', 'success');
+                    setHint('<strong>完了:</strong> 再スキャンする場合は「スキャン開始」、結果だけ消す場合は「結果をクリア」を押してください。');
+                } catch (error) {
+                    console.error(error);
+                    const passwordHint = passwordStr ? 'パスワード誤り、データ破損、または暗号化方式不一致の可能性があります。' : '暗号化済みデータの場合は、パスワードを入力して再試行してください。';
+                    setStatus('展開に失敗しました', passwordHint, 'danger');
+                    setHint('<strong>再試行できます。</strong> 受信済みバッファは保持しています。パスワードを入力・修正して「展開する」を押してください。');
+                } finally {
+                    processing = false;
+                    updateButtons();
+                }
+            }
+
+            async function processAndDownload(fullBuffer, passwordStr) {
+                let compressedBytes;
+                if (passwordStr) {
+                    const salt = fullBuffer.slice(0, 16);
+                    const fernetRaw = fullBuffer.slice(16);
+                    if (fernetRaw[0] !== 0x80) throw new Error('Fernet Version Mismatch');
+                    const enc = new TextEncoder();
+                    const keyMaterial = await crypto.subtle.importKey('raw', enc.encode(passwordStr), { name: 'PBKDF2' }, false, ['deriveBits']);
+                    const rawKey = await crypto.subtle.deriveBits({ name: 'PBKDF2', salt: salt, iterations: 100000, hash: 'SHA-256' }, keyMaterial, 256);
+                    const encryptionKey = new Uint8Array(rawKey).slice(16, 32);
+                    const iv = fernetRaw.slice(9, 25);
+                    const ciphertext = fernetRaw.slice(25, fernetRaw.length - 32);
+                    const aesKey = await crypto.subtle.importKey('raw', encryptionKey, { name: 'AES-CBC' }, false, ['decrypt']);
+                    const decryptedBuffer = await crypto.subtle.decrypt({ name: 'AES-CBC', iv: iv }, aesKey, ciphertext);
+                    compressedBytes = new Uint8Array(decryptedBuffer);
+                } else {
+                    compressedBytes = fullBuffer;
+                }
+
+                const decompressed = await decompressGzip(compressedBytes);
+                if (decompressed.length < 1) throw new Error('Invalid payload');
+                const nameLen = decompressed[0];
+                if (decompressed.length < 1 + nameLen) throw new Error('Invalid filename metadata');
+                const nameBytes = decompressed.slice(1, 1 + nameLen);
+                const filename = new TextDecoder('utf-8').decode(nameBytes);
+                const fileBytes = decompressed.slice(1 + nameLen);
+
+                const ext = filename.split('.').pop().toLowerCase();
+                const mimeMap = {
+                    'png': 'image/png', 'jpg': 'image/jpeg', 'jpeg': 'image/jpeg', 'gif': 'image/gif', 'webp': 'image/webp', 'svg': 'image/svg+xml',
+                    'html': 'text/html', 'htm': 'text/html', 'pdf': 'application/pdf',
+                    'txt': 'text/plain', 'json': 'application/json', 'csv': 'text/csv', 'js': 'application/javascript', 'py': 'text/x-python', 'md': 'text/markdown'
+                };
+                const mimeType = mimeMap[ext] || 'application/octet-stream';
+                const blob = new Blob([fileBytes], { type: mimeType });
+                currentBlobUrl = URL.createObjectURL(blob);
+                downloadBtn.href = currentBlobUrl;
+                downloadBtn.download = filename;
+                downloadBtn.innerText = `「${filename}」を保存する`;
+                downloadBtn.style.display = 'block';
+
+                previewTitle.textContent = `プレビュー: ${filename}`;
+                previewTitle.style.display = 'block';
+                previewNote.style.display = 'block';
+                previewImg.style.display = 'none';
+                previewFrame.style.display = 'none';
+                previewText.style.display = 'none';
+                if (['image/png', 'image/jpeg', 'image/webp', 'image/gif', 'image/svg+xml'].includes(mimeType)) {
+                    previewNote.textContent = '画像はプレビュー用に長辺1200px以下へ縮小表示します。保存ボタンは元ファイルのままです。';
+                    await showResizedImagePreview(fileBytes, mimeType, currentBlobUrl);
+                } else if (mimeType === 'text/html') {
+                    const text = new TextDecoder('utf-8').decode(fileBytes);
+                    previewNote.textContent = 'HTMLは sandbox 付き iframe でプレビューしています。保存ボタンから元HTMLを保存できます。';
+                    previewFrame.removeAttribute('src');
+                    previewFrame.srcdoc = text;
+                    previewFrame.style.display = 'block';
+                } else if (mimeType === 'application/pdf') {
+                    previewNote.textContent = 'PDFはブラウザ内蔵ビューアでプレビューします。iOSで表示されない場合は保存ボタンから開いてください。';
+                    previewFrame.removeAttribute('srcdoc');
+                    previewFrame.src = currentBlobUrl;
+                    previewFrame.style.display = 'block';
+                } else if (mimeType.startsWith('text/') || mimeType === 'application/json') {
+                    const text = new TextDecoder('utf-8').decode(fileBytes);
+                    previewNote.textContent = 'テキスト系ファイルをプレビューしています。';
+                    previewText.value = text;
+                    previewText.style.display = 'block';
+                } else {
+                    previewNote.textContent = 'この形式はインラインプレビューに未対応です。保存ボタンからファイルを取得してください。';
+                }
+            }
+
+
+            async function showResizedImagePreview(fileBytes, mimeType, fallbackUrl) {
+                if (mimeType === 'image/gif' || mimeType === 'image/svg+xml') {
+                    previewImg.src = fallbackUrl;
+                    previewImg.style.display = 'block';
+                    return;
+                }
+                const blob = new Blob([fileBytes], { type: mimeType });
+                try {
+                    const bitmap = await createImageBitmap(blob);
+                    const maxSide = 1200;
+                    const scale = Math.min(1, maxSide / Math.max(bitmap.width, bitmap.height));
+                    const width = Math.max(1, Math.round(bitmap.width * scale));
+                    const height = Math.max(1, Math.round(bitmap.height * scale));
+                    const canvas = document.createElement('canvas');
+                    canvas.width = width;
+                    canvas.height = height;
+                    const pctx = canvas.getContext('2d');
+                    pctx.imageSmoothingEnabled = true;
+                    pctx.drawImage(bitmap, 0, 0, width, height);
+                    if (previewImg.dataset.previewUrl) URL.revokeObjectURL(previewImg.dataset.previewUrl);
+                    const previewBlob = await new Promise(resolve => canvas.toBlob(resolve, mimeType === 'image/png' ? 'image/png' : 'image/jpeg', 0.88));
+                    if (previewBlob) {
+                        const previewUrl = URL.createObjectURL(previewBlob);
+                        previewImg.dataset.previewUrl = previewUrl;
+                        previewImg.src = previewUrl;
+                    } else {
+                        previewImg.src = fallbackUrl;
+                    }
+                    bitmap.close?.();
+                } catch (e) {
+                    console.warn('resized preview failed', e);
+                    previewImg.src = fallbackUrl;
+                }
+                previewImg.style.display = 'block';
+            }
+
+            const resetData = () => {
+                stopCamera();
+                resetReceiveState();
+                passwordInput.value = '';
+                setStatus('スキャン待機中', '準備ができたらスキャンを開始してください。', 'normal');
+                updateButtons();
+            };
+
+            const clearResultOnly = () => {
+                completedBuffer = null;
+                clearPreviewAndDownload();
+                setHint('');
+                setStatus('結果をクリアしました', '再度受信するには「スキャン開始」を押してください。', 'normal');
+                updateButtons();
+            };
+
+            passwordInput.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' && completedBuffer && !processing) retryProcessCompletedBuffer(false);
+            });
+
+            scanSizeSelect.addEventListener('change', () => {
+                configureScanCanvas();
+                lastGoodLocation = null;
+                currentQRLocation = null;
+                consecutiveMisses = 0;
+            });
+            workerCountSelect.addEventListener('change', () => { if (isScanning) setupWorkers(); });
+            queueSizeSelect.addEventListener('change', () => {
+                const maxQueue = getMaxQueue();
+                if (decodeQueue.length > maxQueue) decodeQueue.splice(0, decodeQueue.length - maxQueue);
+                updateStatsDisplay();
+            });
+            zoomSelect.addEventListener('change', applyCameraAdvanced);
+            torchCheck.addEventListener('change', applyCameraAdvanced);
+
+            updateButtons();
+            updateStatsDisplay();
+        </script>
+    </body>
+
+</html>
