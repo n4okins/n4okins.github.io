@@ -1,6 +1,6 @@
 {
   "format_version": 3,
-  "data_version": "2026-08-26-ranges-v3",
+  "data_version": "2026-08-26-ranges-v5-addon23",
   "character": {
     "level": {
       "min": 1,
@@ -343,6 +343,17 @@
     },
     "addition_number": {
       "editable": false
+    },
+    "budget_from_flags": {
+      "base": 3,
+      "pow_flag_pattern": "^Guild2\\.adonPow([0-9]+)$",
+      "confirmed_pow_max_v510": 10,
+      "business_bonus": {
+        "Guild2.adonBisiness1": 5
+      },
+      "absolute_total_max": 23,
+      "note": "v5.10 static analysis confirms base 3 + adonPow1..10 each +1 + adonBisiness1 +5 (=18). Current game specification permits 15 purchased points plus Premium Pack 5, so v7.30-compatible editing uses adonPow1..15 + adonBisiness1 for max 23.",
+      "current_pow_max": 15
     }
   },
   "premium_time": {
@@ -388,7 +399,8 @@
   },
   "evidence": {
     "ipa_v510": "adon_exp/gp/rare/time と adonPow_* は0～9のテーブル参照を確認。",
-    "wiki_current": "現行アドオンは経験値/GP/レア/称号、各0～9、総ポイント最大23。基本能力は種族基礎値+10まで。"
+    "wiki_current": "現行アドオンは経験値/GP/レア/称号、各0～9、総ポイント最大23。基本能力は種族基礎値+10まで。",
+    "current_addon": "Current Wiki: initial 3 + up to 15 purchased + Premium Pack 5 = max 23; version history documents +5 purchasable points after older builds."
   },
   "twitter_bonus": {
     "key": "twitter_last_time",
@@ -435,6 +447,24 @@
         "value": 10,
         "confidence": "confirmed"
       }
-    ]
+    ],
+    "save_file_flags": {
+      "sysAPov": {
+        "meaning": "adonPoint_now > adonPoint_max",
+        "confidence": "confirmed-v5.10-static"
+      },
+      "sysWrit": {
+        "meaning": "private filesystem write environment check succeeded",
+        "confidence": "confirmed-v5.10-static"
+      },
+      "sysCynst": {
+        "meaning": "system/Cydia-style environment check",
+        "confidence": "confirmed-v5.10-static"
+      },
+      "sysRbt": {
+        "meaning": "rabbit-related abnormal check",
+        "confidence": "confirmed-v5.10-static"
+      }
+    }
   }
 }
